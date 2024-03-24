@@ -1,0 +1,362 @@
+[
+  {
+    "key": [
+      0,
+      -2,
+      -1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      -2,
+      0
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      0,
+      -2,
+      1
+    ],
+    "value": "left_1"
+  },
+  {
+    "key": [
+      0,
+      -1,
+      -1
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      -1,
+      0
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      -1,
+      1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      0,
+      -1
+    ],
+    "value": "right_1"
+  },
+  {
+    "key": [
+      0,
+      0,
+      0
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      0,
+      1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      1,
+      -1
+    ],
+    "value": "up-left_1"
+  },
+  {
+    "key": [
+      0,
+      1,
+      0
+    ],
+    "value": "up-left_1"
+  },
+  {
+    "key": [
+      0,
+      1,
+      1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      2,
+      -1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      0,
+      2,
+      0
+    ],
+    "value": "left_1"
+  },
+  {
+    "key": [
+      0,
+      2,
+      1
+    ],
+    "value": "left_1"
+  },
+  {
+    "key": [
+      1,
+      -2,
+      -1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      1,
+      -2,
+      0
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      1,
+      -2,
+      1
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      1,
+      -1,
+      -1
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      1,
+      -1,
+      0
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      1,
+      -1,
+      1
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      1,
+      0,
+      -1
+    ],
+    "value": "down-right_1"
+  },
+  {
+    "key": [
+      1,
+      0,
+      0
+    ],
+    "value": "left_1"
+  },
+  {
+    "key": [
+      1,
+      0,
+      1
+    ],
+    "value": "right_1"
+  },
+  {
+    "key": [
+      1,
+      1,
+      -1
+    ],
+    "value": "down-right_1"
+  },
+  {
+    "key": [
+      1,
+      1,
+      0
+    ],
+    "value": "left_1"
+  },
+  {
+    "key": [
+      1,
+      1,
+      1
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      1,
+      2,
+      -1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      1,
+      2,
+      0
+    ],
+    "value": "up-left_1"
+  },
+  {
+    "key": [
+      1,
+      2,
+      1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      2,
+      -2,
+      -1
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      2,
+      -2,
+      0
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      2,
+      -2,
+      1
+    ],
+    "value": "right_1"
+  },
+  {
+    "key": [
+      2,
+      -1,
+      -1
+    ],
+    "value": "down-right_1"
+  },
+  {
+    "key": [
+      2,
+      -1,
+      0
+    ],
+    "value": "down-left_1"
+  },
+  {
+    "key": [
+      2,
+      -1,
+      1
+    ],
+    "value": "down-right_1"
+  },
+  {
+    "key": [
+      2,
+      0,
+      -1
+    ],
+    "value": "down-right_1"
+  },
+  {
+    "key": [
+      2,
+      0,
+      0
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      2,
+      0,
+      1
+    ],
+    "value": "right_1"
+  },
+  {
+    "key": [
+      2,
+      1,
+      -1
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      2,
+      1,
+      0
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      2,
+      1,
+      1
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      2,
+      2,
+      -1
+    ],
+    "value": "up-left_1"
+  },
+  {
+    "key": [
+      2,
+      2,
+      0
+    ],
+    "value": "up-left_1"
+  },
+  {
+    "key": [
+      2,
+      2,
+      1
+    ],
+    "value": "up-right_1"
+  }
+]
