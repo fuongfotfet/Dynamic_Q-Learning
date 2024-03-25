@@ -15,7 +15,7 @@ class Robot:
         self.moveDirection = (0, 0)
 
     # Move the robot according to the direction vector
-    def move(self):
+    def move(self) -> None:
         x, y = self.pos
         dx = self.moveDirection[0] * self.cell_size
         dy = self.moveDirection[1] * self.cell_size
@@ -30,12 +30,12 @@ class Robot:
         self.pos = (x + dx / self.numsOfSteps, y + dy / self.numsOfSteps)
         self.currentStep += 1
 
-    def resetPosition(self, start: tuple):
+    def resetPosition(self, start: tuple) -> None:
         self.pos = start
         self.currentStep = 0
         self.moveDirection = (0, 0)
 
-    def draw(self, window, draw_sr=True):
+    def draw(self, window, draw_sr=True) -> None:
         if draw_sr:
             # draw the sensor range
             pygame.draw.circle(window,
@@ -47,13 +47,13 @@ class Robot:
         pygame.draw.circle(window, RED, self.pos, self.r, 0)
 
     # Check if the robot has reached the goal
-    def reach(self, goal, epsilon=16):
+    def reach(self, goal, epsilon=16) -> bool:
         robotX, robotY = self.pos
         goalX, goalY = goal
         return ((robotX - goalX) ** 2 + (robotY - goalY) ** 2) <= epsilon ** 2
 
     # Get the closest dynamic obstacles within the vision range
-    def detect(self, obstacles_list):
+    def detect(self, obstacles_list) -> list or None:
         # Get index of the closest dynamic obstacle
         index = -1
         min_distance = float('inf')
@@ -82,7 +82,7 @@ class Robot:
         else:
             return None
 
-    def getDistanceToClosestObstacle(self, obstacles_list):
+    def getDistanceToClosestObstacle(self, obstacles_list) -> float:
         # Get distance of the closest obstacle
         min_distance = float('inf')
         for i, obstacle in enumerate(obstacles_list):
@@ -95,7 +95,7 @@ class Robot:
         return min(self.vision, min_distance ** 0.5)
 
     # Check if the robot has collided with the obstacles
-    def checkCollision(self, obstacles_list):
+    def checkCollision(self, obstacles_list) -> bool:
         for obstacle in obstacles_list:
             x1, x2, y1, y2 = obstacle.return_coordinate()
             closest_x = max(x1, min(self.pos[0], x2))
@@ -107,13 +107,13 @@ class Robot:
 
         return False
 
-    def setDiscount(self):
+    def setDiscount(self) -> None:
         self.decisionMaker.setCollision()
 
-    def nextPosition(self, goal):
+    def nextPosition(self, goal) -> tuple:
         return goal
 
-    def makeDecision(self, obstacles_list):
+    def makeDecision(self, obstacles_list) -> None:
         # After the robot has moved for a certain number of steps, make a new decision and reset the step counter
         if self.currentStep >= self.numsOfSteps:
             obstacle = self.detect(obstacles_list)
@@ -126,11 +126,11 @@ class Robot:
 
             self.currentStep = 0
 
-    def updateQ(self):
+    def updateQ(self) -> None:
         self.decisionMaker.updateAll(self)
 
-    def outputPolicy(self, scenario, current_map, run_index):
+    def outputPolicy(self, scenario, current_map, run_index) -> None:
         self.decisionMaker.outputPolicy(scenario, current_map, run_index)
 
-    def resetController(self):
+    def resetController(self) -> None:
         self.decisionMaker.reset()

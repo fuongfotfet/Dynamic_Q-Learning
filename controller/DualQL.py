@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import random
-from Controller import Controller, action_space, decision_movement, convertphi, convertdeltaphi, convertdeltad, angle, \
+from controller.Controller import Controller, action_space, decision_movement, convertphi, convertdeltaphi, convertdeltad, angle, \
     remap_keys, find_octant
 
 # Hyperparameters
@@ -36,7 +36,7 @@ class QLearning(Controller):
 
         self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         global EPSILON
         EPSILON = 0.5
 
@@ -116,7 +116,7 @@ class QLearning(Controller):
                             self.obstacleQtable[(phi, delta_phi, delta_d, goal_direction, action)] = 0
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
-    def setCollision(self):
+    def setCollision(self) -> None:
         if not self.isObstacleDecisionMade:
             if len(self.episodeDecisions) == 0:
                 return
@@ -141,7 +141,7 @@ class QLearning(Controller):
             self.obstacleEpisodeDecisions.append((state, decision, reward))
 
     # Out put policy to json file
-    def outputPolicy(self, scenario, current_map, run_index):
+    def outputPolicy(self, scenario, current_map, run_index) -> None:
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/policy.json", "w") as outfile:
             json.dump(remap_keys(self.policy), outfile, indent=2)
 
@@ -157,7 +157,7 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state):
+    def updateQtable(self, state, decision, reward, next_state) -> float:
         # Optimal value of next state
         optimalQnext = max(
             [self.Qtable[(next_state[0], next_state[1], action)] for action
@@ -171,14 +171,14 @@ class QLearning(Controller):
         # Calculate change in Q value
         return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
-    def updatePolicy(self, state):
+    def updatePolicy(self, state) -> None:
         # Update policy
         bestAction = max(action_space,
                          key=lambda action: self.Qtable[(state[0], state[1], action)])
 
         self.policy[state] = bestAction
 
-    def updateObstacleQtable(self, state, decision, reward, next_state):
+    def updateObstacleQtable(self, state, decision, reward, next_state) -> float:
         # Optimal value of next state
         optimalQnext = max(
             [self.obstacleQtable[(next_state[0], next_state[1], next_state[2], next_state[3], action)] for action
@@ -192,14 +192,14 @@ class QLearning(Controller):
         # Calculate change in Q value
         return abs(self.obstacleQtable[(state[0], state[1], state[2], next_state[3], decision)] - prevQ)
 
-    def updateObstaclePolicy(self, state):
+    def updateObstaclePolicy(self, state) -> None:
         # Update policy
         bestAction = max(action_space,
                          key=lambda action: self.obstacleQtable[(state[0], state[1], state[2], state[3], action)])
 
         self.obstaclePolicy[state] = bestAction
 
-    def updateAll(self, rb):
+    def updateAll(self, rb) -> None:
         global EPSILON
 
         # Add reward after success
@@ -256,7 +256,7 @@ class QLearning(Controller):
 
         self.hasCollided = False
 
-    def makeDecision(self, rb):
+    def makeDecision(self, rb) -> str:
         # Add reward to obstacle decision after successfully avoiding the obstacle
         if self.isObstacleDecisionMade and len(self.obstacleEpisodeDecisions) > 0:
             self.obstacleEpisodeDecisions[-1] = (
@@ -295,7 +295,7 @@ class QLearning(Controller):
 
         return decision
 
-    def makeObstacleDecision(self, rb, obstacle_position):
+    def makeObstacleDecision(self, rb, obstacle_position) -> str:
         self.isObstacleDecisionMade = True
 
         # Get the position of the obstacle before and after moving

@@ -6,7 +6,6 @@ from pygame.locals import *
 from Robot import Robot
 from Colors import *
 from MapData import maps
-from Obstacle import Obstacle
 
 # Choose the version of the algorithm:
 # 1 for Conventional Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning
@@ -33,10 +32,13 @@ elif version == "3":
 else:
     from controller.Controller import ControllerTester
 
+isTraining = input("Training? (y/n): ") == "y"
 # Scenario in one of: [uniform, diverse, complex]
-scenario = 'uniform'  # input('Enter scenario: ')
+scenario = input("Enter scenario (uniform/diverse/complex): ")
 # Input map from 1 to 3
-input_map = '3'  # input('Enter map number: ')
+input_map = input("Enter map (1/2/3): ")
+# Number of runs
+numsOfRuns = 20 if input("Automatically run 20 times? (y/n): ") == "y" else 1
 
 # Initialize the robot
 start = maps[scenario + input_map]["Start"]
@@ -44,7 +46,6 @@ goal = maps[scenario + input_map]["Goal"]
 cell_size = 16
 env_size = 512
 env_padding = int(env_size * 0.06)
-isTraining = input("Training? (y/n): ") == "y"
 path = []
 pathLength = 0
 distanceToObstacle = []
@@ -55,20 +56,20 @@ robot = Robot(start=start, cell_size=cell_size,
                                                   goal=goal, scenario=scenario, current_map=input_map, version=version))
 
 
-def draw_target(window, target):
+def draw_target(window, target) -> None:
     pygame.draw.circle(window, RED, target, 8, 0)
 
 
-def draw_start(window, start):
+def draw_start(window, start) -> None:
     pygame.draw.circle(window, GREEN, start, 6, 0)
 
 
-def draw_path(window, path, color):
+def draw_path(window, path, color) -> None:
     for i in range(1, len(path)):
         pygame.draw.line(window, color, path[i - 1], path[i], 2)
 
 
-def draw_grid(window, cell_size, env_size, env_padding):
+def draw_grid(window, cell_size, env_size, env_padding) -> None:
     for i in range(1, int(env_size / cell_size)):
         pygame.draw.line(window, BLACK, (env_padding + i * cell_size, env_padding),
                          (env_padding + i * cell_size, env_padding + env_size), 1)
@@ -76,7 +77,7 @@ def draw_grid(window, cell_size, env_size, env_padding):
                          (env_padding + env_size, env_padding + i * cell_size), 1)
 
 
-def main(scenario, test_map, interactive=True):
+def main(test_map):
     global success_counter, pathLength
 
     env_width = env_height = env_size
@@ -90,152 +91,91 @@ def main(scenario, test_map, interactive=True):
     my_font = pygame.font.SysFont("arial", SOUTH_PAD // 5)
 
     # Initialization
-    mx, my, new_mx, new_my = None, None, None, None
-    drawing = False
-    done = False
     finished = False
-    isStatic = True
     obstacles_list = []
     pause = False
+    started = False
     distanceStartGoal = np.sqrt((start[0] - goal[0]) ** 2 + (start[1] - goal[1]) ** 2)
     path.append(start)
 
     # Reset the robot
     robot.resetPosition(start)
 
-    # Auto run
-    if not interactive:
-        if test_map in maps:
-            obstacles_list = maps[test_map]["Obstacles"]
-        done = True
+    # Load the obstacles
+    if test_map in maps:
+        obstacles_list = maps[test_map]["Obstacles"]
 
     while not finished:
 
         screen.fill(WHITE)
-        if interactive:
-            # Button
-            # Start
-            button1 = pygame.draw.rect(screen, BLACK, (LEFT_PAD + int(env_width * 0.1), NORTH_PAD * 2 + env_height,
-                                                       int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
-            button1_text = my_font.render("Start", True, (0, 0, 0))
-            button1_rect = button1_text.get_rect(center=button1.center)
-            screen.blit(button1_text, button1_rect)
+        # Button
+        # Start
+        button1 = pygame.draw.rect(screen, BLACK, (LEFT_PAD + int(env_width * 0.7), NORTH_PAD * 2 + env_height,
+                                                   int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
+        button1_text = my_font.render("Start", True, (0, 0, 0))
+        button1_rect = button1_text.get_rect(center=button1.center)
+        screen.blit(button1_text, button1_rect)
 
-            # Pause
-            button2 = pygame.draw.rect(screen, BLACK, (LEFT_PAD + int(env_width * 0.7), NORTH_PAD * 2 + env_height,
-                                                       int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
-            button2_text = my_font.render("Pause", True, (0, 0, 0))
-            button2_rect = button2_text.get_rect(center=button2.center)
-            screen.blit(button2_text, button2_rect)
+        # Pause
+        button2 = pygame.draw.rect(screen, BLACK, (LEFT_PAD + int(env_width * 0.4), NORTH_PAD * 2 + env_height,
+                                                    int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
+        button2_text = my_font.render("Pause", True, (0, 0, 0))
+        button2_rect = button2_text.get_rect(center=button2.center)
+        screen.blit(button2_text, button2_rect)
 
-            # Static / Dynamic
-            button3 = pygame.draw.rect(screen,
-                                       BLACK,
-                                       (LEFT_PAD + int(env_width * 0.4),
-                                        NORTH_PAD * 2 + env_height,
-                                        int(env_width * 0.2),
-                                        int(SOUTH_PAD * 0.4)),
-                                       4)
-            button3_text = my_font.render("Static", True, (0, 0, 0))
-            button3_rect = button3_text.get_rect(center=button3.center)
-            screen.blit(button3_text, button3_rect)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
 
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = event.pos
+                # Button 1: Save the obstacles into Obstacles.py and start the simulation
+                if button1.collidepoint(mouse_x, mouse_y):
+                    started = True
+                # Button 2: Pause the simulation
+                elif button2.collidepoint(mouse_x, mouse_y):
+                    pause = not pause
 
-                    # Button 1: Save the obstacles into Obstacles.py and start the simulation
-                    if button1.collidepoint(mouse_x, mouse_y):
-                        done = True
-                        with open("MapData.py", 'a') as f:
-                            f.write(",\n".join([o.__str__() for o in obstacles_list]))
-                        if test_map in maps:
-                            obstacles_list = maps[test_map]
-                    # Button 2: Pause the simulation
-                    elif button2.collidepoint(mouse_x, mouse_y):
-                        pause = not pause
-                    # Button 3: Change the mode of the obstacles when drawing
-                    elif button3.collidepoint(mouse_x, mouse_y):
-                        isStatic = not isStatic
-                        if isStatic:
-                            print("Static")
-                        else:
-                            print("Dynamic")
-                    else:
-                        mx, my = mouse_x, mouse_y
-                        drawing = True
-                        done = False
+        if started or isTraining:
+            if pause:
+                continue
+            else:
+                # Draw the obstacles
+                for obstacle in obstacles_list:
+                    obstacle.move()
+                    obstacle.draw(screen)
 
-                # If the mouse is released, create a new obstacle
-                if event.type == MOUSEBUTTONUP:
-                    if drawing:
-                        new_mx, new_my = event.pos
-                        new_obstacle = Obstacle((mx + new_mx) / 2,
-                                                (my + new_my) / 2,
-                                                abs(new_mx - mx),
-                                                abs(new_my - my),
-                                                isStatic,
-                                                np.random.randn(2) * 2)
-                        obstacles_list.append(new_obstacle)
-                        drawing = False
+                # Make decision and move
+                robot.makeDecision(obstacles_list)
+                robot.move()
 
-                # Ctrl + Z to undo the last obstacle
-                if event.type == KEYDOWN:
-                    if event.key == pygame.K_z and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        if obstacles_list and not done:
-                            obstacles_list.pop()
+                # Draw the path
+                path.append(robot.pos)
+                pathLength += np.sqrt((path[-1][0] - path[-2][0]) ** 2 + (path[-1][1] - path[-2][1]) ** 2)
+                draw_path(screen, path, ORANGE)
 
-        # Continuously draw the obstacles
-        if drawing:
-            new_mx, new_my = pygame.mouse.get_pos()
-            pygame.draw.rect(screen, BLACK, (min(mx, new_mx), min(my, new_my), abs(new_mx - mx), abs(new_my - my)))
+                # Check if the robot has collided with the obstacles or the robot stuck in local optima
+                if robot.checkCollision(obstacles_list) or pathLength > 5 * distanceStartGoal:
+                    robot.setDiscount()
+                    success_counter = 0
+                    finished = True
 
-        # If the drawing mode is not done, draw the obstacles
-        if not done:
-            for obstacle in obstacles_list:
-                obstacle.draw(screen)
-        elif pause:
-            continue
-        else:
+                # Draw the start, target and robot
+                draw_start(screen, start)
+                draw_target(screen, goal)
+                robot.draw(screen)
 
-            # Draw the obstacles
-            for obstacle in obstacles_list:
-                obstacle.move()
-                obstacle.draw(screen)
+                # If training mode, speed up the simulation
+                if not isTraining:
+                    # print(robot.getDistanceToClosestObstacle(obstacles_list))
+                    distanceToObstacle.append(robot.getDistanceToClosestObstacle(obstacles_list))
+                    time.sleep(0.02)
 
-            # Make decision and move
-            robot.makeDecision(obstacles_list)
-            robot.move()
-
-            # Draw the path
-            path.append(robot.pos)
-            pathLength += np.sqrt((path[-1][0] - path[-2][0]) ** 2 + (path[-1][1] - path[-2][1]) ** 2)
-            draw_path(screen, path, ORANGE)
-
-            # Check if the robot has collided with the obstacles or the robot stuck in local optima
-            if robot.checkCollision(obstacles_list) or pathLength > 3 * distanceStartGoal:
-                robot.setDiscount()
-                success_counter = 0
-                finished = True
-
-            # Draw the start, target and robot
-            draw_start(screen, start)
-            draw_target(screen, goal)
-            robot.draw(screen)
-
-            # If training mode, speed up the simulation
-            if not isTraining:
-                # print(robot.getDistanceToClosestObstacle(obstacles_list))
-                distanceToObstacle.append(robot.getDistanceToClosestObstacle(obstacles_list))
-                time.sleep(0.05)
-
-            # Check if the robot has reached the goal
-            if robot.reach(goal):
-                success_counter += 1
-                finished = True
+                # Check if the robot has reached the goal
+                if robot.reach(goal):
+                    success_counter += 1
+                    finished = True
 
         # Draw the grid
         draw_grid(screen, cell_size, env_size, env_padding)
@@ -243,11 +183,14 @@ def main(scenario, test_map, interactive=True):
         # Draw boundary
         pygame.draw.rect(screen, BLACK, (LEFT_PAD, NORTH_PAD, env_width, env_height), 3)
         pygame.display.update()
-        
+
+    # Reset the obstacles following the path
+    for obstacle in obstacles_list:
+        obstacle.reset()
+
 
 if __name__ == '__main__':
-    numsOfRuns = 20
-    epochs = 500
+    epochs = 800
 
     if isTraining:
         for i in range(numsOfRuns):
@@ -255,7 +198,7 @@ if __name__ == '__main__':
                 print(f"Run {i + 1}, Epoch {j + 1}")
                 path.clear()
                 pathLength = 0
-                main(scenario, scenario + input_map, False)
+                main(scenario + input_map)
                 robot.updateQ()
 
                 # if success_counter >= 5:
@@ -266,13 +209,14 @@ if __name__ == '__main__':
             # Reinitialize the controller
             robot.resetController()
     else:
-        main(scenario, scenario + input_map, True)
+        main(scenario + input_map)
 
         print(f"Path length: {pathLength}")
         print(f"Average distance to obstacle: {np.mean(distanceToObstacle)}")
 
         with open(f"result/{scenario}/{scenario + input_map}/{algorithm}/metric.txt", "a") as f:
-            f.write(scenario + input_map + ": " + "version" + str(version) + " " + str(pathLength) + " " + str(np.mean(distanceToObstacle)))
+            f.write(scenario + input_map + ": " + "version" + str(version) + " " + str(pathLength) + " " + str(
+                np.mean(distanceToObstacle)))
             if success_counter == 0:
                 f.write(" Fail")
             f.write("\n")

@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import random
-from Controller import Controller, action_space, decision_movement, remap_keys
+from controller.Controller import Controller, action_space, decision_movement, remap_keys
 
 # This is the implementation of the following paper:
 # Hao, Bing, He Du, and Zheping Yan. "A path planning approach for unmanned surface
@@ -35,7 +35,7 @@ class QLearning(Controller):
 
         self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         global EPSILON
         EPSILON = 0.5
 
@@ -91,7 +91,7 @@ class QLearning(Controller):
                     self.Qtable[(i, j, action)] = ini_value
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
-    def setCollision(self):
+    def setCollision(self) -> None:
         if len(self.episodeDecisions) == 0:
             return
 
@@ -104,7 +104,7 @@ class QLearning(Controller):
         self.episodeDecisions.append((state, decision, reward))
 
     # Out put policy to json file
-    def outputPolicy(self, scenario, current_map, run_index):
+    def outputPolicy(self, scenario, current_map, run_index) -> None:
         with open(f"policy/{scenario}/{current_map}/DFQL/{run_index}/policy.json", "w") as outfile:
             json.dump(remap_keys(self.policy), outfile, indent=2)
 
@@ -117,7 +117,7 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/DFQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state):
+    def updateQtable(self, state, decision, reward, next_state) -> float:
         # Optimal value of next state
         optimalQnext = max([self.Qtable[(next_state[0], next_state[1], action)] for action in action_space])
 
@@ -129,13 +129,13 @@ class QLearning(Controller):
         # Calculate change in Q value
         return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
-    def updatePolicy(self, state):
+    def updatePolicy(self, state) -> None:
         # Update policy
         bestAction = max(action_space, key=lambda action: self.Qtable[(state[0], state[1], action)])
 
         self.policy[state] = bestAction
 
-    def updateAll(self, rb):
+    def updateAll(self, rb) -> None:
         global EPSILON
 
         # Add reward after success
@@ -176,7 +176,7 @@ class QLearning(Controller):
 
         self.hasCollided = False
 
-    def makeDecision(self, rb):
+    def makeDecision(self, rb) -> str:
         state = self.convertState(rb)
 
         # Epsilon greedy

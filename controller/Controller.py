@@ -17,7 +17,7 @@ DESCRETE_DELTAPHI = [-4, -2, 2, 4]
 DESCRETE_DELTAD = [-1, 1]
 
 
-def convertphi(phi):
+def convertphi(phi) -> int:
     if phi < DESCRETE_PHI[0]:
         return 0  # F
     elif phi < DESCRETE_PHI[1]:
@@ -26,7 +26,7 @@ def convertphi(phi):
         return 2  # S
 
 
-def convertdeltad(deltad):
+def convertdeltad(deltad) -> int:
     if deltad < DESCRETE_DELTAD[0]:
         return -1  # C
     elif deltad < DESCRETE_DELTAD[1]:
@@ -35,7 +35,7 @@ def convertdeltad(deltad):
         return 1  # A
 
 
-def convertdeltaphi(deltaphi):
+def convertdeltaphi(deltaphi) -> int:
     if deltaphi < DESCRETE_DELTAPHI[0]:
         return -2  # C
     elif deltaphi < DESCRETE_DELTAPHI[1]:
@@ -48,7 +48,7 @@ def convertdeltaphi(deltaphi):
         return 2  # A
 
 
-def find_octant(x, y, goal):
+def find_octant(x, y, goal) -> int:
     relative_x = goal[0] - x
     relative_y = goal[1] - y
 
@@ -76,11 +76,11 @@ def find_octant(x, y, goal):
                 return 5
 
 
-def angle(x1, y1, x2, y2):
+def angle(x1, y1, x2, y2) -> float:
     return np.arccos((x1 * x2 + y1 * y2) / (np.sqrt(x1 * x1 + y1 * y1) * np.sqrt(x2 * x2 + y2 * y2) + 1e-6))
 
 
-def remap_keys(mapping):
+def remap_keys(mapping) -> list:
     return [{'key': k, 'value': v} for k, v in mapping.items()]
 
 
@@ -92,35 +92,36 @@ class Controller:
         self.goal = goal
         self.policy = {}
 
-    def convertState(self, rb):
+    def convertState(self, rb) -> tuple:
         # Convert state to cell
         i = int((rb.pos[0] - self.env_padding) / self.cell_size)
         j = int((rb.pos[1] - self.env_padding) / self.cell_size)
 
         return i, j
 
-    def makeDecision(self, rb):
+    def makeDecision(self, rb) -> str:
         return self.policy[self.convertState(rb)]
 
-    def makeObstacleDecision(self, rb, obstacle_position):
+    def makeObstacleDecision(self, rb, obstacle_position) -> str:
         return self.makeDecision(rb)
 
-    def calculateDistanceToGoal(self, state):
+    def calculateDistanceToGoal(self, state) -> float:
         # Use diagonal distance bacause of action space
         position = (self.env_padding + self.cell_size / 2 + state[0] * self.cell_size,
                     self.env_padding + self.cell_size / 2 + state[1] * self.cell_size)
         x, y = self.goal[0] - position[0], self.goal[1] - position[1]
         return np.abs(x - y) + np.sqrt(2) * min(np.abs(x), np.abs(y))
 
-    def reset(self):
-        pass
-    def setCollision(self):
+    def reset(self) -> None:
         pass
 
-    def updateAll(self, rb):
+    def setCollision(self) -> None:
         pass
 
-    def outputPolicy(self, scenario, current_map, run_index):
+    def updateAll(self, rb) -> None:
+        pass
+
+    def outputPolicy(self, scenario, current_map, run_index) -> None:
         pass
 
 
@@ -139,12 +140,12 @@ class ControllerTesterCombined(ControllerTester):
     def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, version):
         super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, version)
 
-    def makeDecision(self, rb):
+    def makeDecision(self, rb) -> str:
         state = self.convertState(rb)
         state = (state[0], state[1], -10, -10, -10)
         return self.policy[state]
 
-    def makeObstacleDecision(self, rb, obstacle_position):
+    def makeObstacleDecision(self, rb, obstacle_position) -> str:
         # Get the position of the obstacle before and after moving
         # Then calculate the relative position of the obstacle to the robot
         obstacle_before = obstacle_position[0]
@@ -180,7 +181,7 @@ class ControllerTesterDual(ControllerTester):
             for map in maps:
                 self.obstaclePolicy[tuple(map['key'])] = map['value']
 
-    def makeObstacleDecision(self, rb, obstacle_position):
+    def makeObstacleDecision(self, rb, obstacle_position) -> str:
         # Get the position of the obstacle before and after moving
         # Then calculate the relative position of the obstacle to the robot
         obstacle_before = obstacle_position[0]

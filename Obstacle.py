@@ -18,7 +18,7 @@ class Obstacle(Object):
         self.followPath = followPath
         self.path = path
 
-    def draw(self, window, with_past=True):
+    def draw(self, window, with_past=True) -> None:
         if with_past:
             for pos_x, pos_y in self.history[-5:]:
                 pygame.draw.rect(window, GREY,
@@ -27,7 +27,7 @@ class Obstacle(Object):
         pygame.draw.rect(window, color, (self.x - self.width / 2, self.y - self.height / 2, self.width, self.height))
 
     # Move the obstacle within the boundaries
-    def move(self):
+    def move(self) -> None:
         self.history.append((self.x, self.y))
 
         # If the obstacle is following a path, move to the next point in the path
@@ -38,8 +38,8 @@ class Obstacle(Object):
                 v = (self.path[self.counter][0] - self.x, self.path[self.counter][1] - self.y)
                 v_x, v_y = [float(i) / np.linalg.norm(v) for i in v]
 
-                self.x += v_x
-                self.y += v_y
+                self.x += v_x * self.v[0]
+                self.y += v_y * self.v[0]
 
                 # If the obstacle is close enough to the next point in the path, move to the next point
                 if abs(self.x - self.path[self.counter][0]) < 1 and abs(self.y - self.path[self.counter][1]) < 1:
@@ -62,9 +62,14 @@ class Obstacle(Object):
                     self.y = self.y_bound[1]
                     self.v = (v_x, -v_y)
 
-    def undo_move(self):
+    def reset(self) -> None:
+        if self.followPath:
+            self.x, self.y = self.path[0]
+            self.counter = 1
+
+    def undo_move(self) -> None:
         if len(self.history) > 0:
             self.x, self.y = self.history.pop()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Obstacle({self.x}, {self.y}, {self.width}, {self.height}, {self.static}, [{self.v[0]}, {self.v[1]}])"

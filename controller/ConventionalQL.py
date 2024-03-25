@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import random
-from Controller import Controller, action_space, remap_keys
+from controller.Controller import Controller, action_space, remap_keys
 
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9
@@ -16,14 +16,6 @@ collisionDiscount = -5
 successReward = 15
 
 
-def updateHyperparameters():
-    global EPSILON
-    global ALPHA
-
-    EPSILON *= EPSILON_DECAY
-    ALPHA *= LEARNING_RATE_DECAY
-
-
 class QLearning(Controller):
     def __init__(self, cell_size, env_size, env_padding, goal):
         # Initialize Qtable and policy
@@ -35,9 +27,7 @@ class QLearning(Controller):
         self.averageReward = []
         self.hasCollided = False
 
-
-
-    def reset(self):
+    def reset(self) -> None:
         global EPSILON
         EPSILON = 0.5
 
@@ -51,7 +41,8 @@ class QLearning(Controller):
         for i in range(int(self.env_size / self.cell_size)):
             for j in range(int(self.env_size / self.cell_size)):
                 # Initialize policy to always go to the goal, wherever the robot is
-                cell_center = (self.env_padding + self.cell_size / 2 + i * self.cell_size, self.env_padding + self.cell_size / 2 + j * self.cell_size)
+                cell_center = (self.env_padding + self.cell_size / 2 + i * self.cell_size,
+                               self.env_padding + self.cell_size / 2 + j * self.cell_size)
                 direction = (self.goal[0] - cell_center[0], self.goal[1] - cell_center[1])
                 decision = ""
 
@@ -85,7 +76,7 @@ class QLearning(Controller):
                     self.Qtable[(i, j, action)] = 0
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
-    def setCollision(self):
+    def setCollision(self) -> None:
         if len(self.episodeDecisions) == 0:
             return
 
@@ -98,7 +89,7 @@ class QLearning(Controller):
         self.episodeDecisions.append((state, decision, reward))
 
     # Out put policy to json file
-    def outputPolicy(self, scenario, current_map, run_index):
+    def outputPolicy(self, scenario, current_map, run_index) -> None:
         with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/policy.json", "w") as outfile:
             json.dump(remap_keys(self.policy), outfile, indent=2)
 
@@ -111,7 +102,7 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state):
+    def updateQtable(self, state, decision, reward, next_state) -> float:
         # Optimal value of next state
         optimalQnext = max([self.Qtable[(next_state[0], next_state[1], action)] for action in action_space])
 
@@ -123,13 +114,15 @@ class QLearning(Controller):
         # Calculate change in Q value
         return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
-    def updatePolicy(self, state):
+    def updatePolicy(self, state) -> None:
         # Update policy
         bestAction = max(action_space, key=lambda action: self.Qtable[(state[0], state[1], action)])
 
         self.policy[state] = bestAction
 
-    def updateAll(self, rb):
+    def updateAll(self, rb) -> None:
+        global EPSILON
+
         # Add reward after success
         if not self.hasCollided:
             self.episodeDecisions[-1] = (
@@ -164,11 +157,11 @@ class QLearning(Controller):
 
         # Update hyperparameters
         if not self.hasCollided:
-            updateHyperparameters()
+            EPSILON *= EPSILON_DECAY
 
         self.hasCollided = False
 
-    def makeDecision(self, rb):
+    def makeDecision(self, rb) -> str:
         state = self.convertState(rb)
 
         # Epsilon greedy
