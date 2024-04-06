@@ -100,7 +100,6 @@ class Controller:
         return i, j
 
     def makeDecision(self, rb) -> str:
-        print(self.convertState(rb))
         return self.policy[self.convertState(rb)]
 
     def makeObstacleDecision(self, rb, obstacle_position) -> str:
@@ -144,7 +143,6 @@ class ControllerTesterCombined(ControllerTester):
     def makeDecision(self, rb) -> str:
         state = self.convertState(rb)
         state = (state[0], state[1], -10, -10, -10)
-        print(state)
         return self.policy[state]
 
     def makeObstacleDecision(self, rb, obstacle_position) -> str:
@@ -169,7 +167,6 @@ class ControllerTesterCombined(ControllerTester):
 
         state = self.convertState(rb)
         state = (state[0], state[1], c_phi, c_deltaphi, c_deltad)
-        print(state)
         return self.policy[state]
 
 
