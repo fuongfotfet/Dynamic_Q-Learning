@@ -55,6 +55,7 @@ pathLength = 0
 distanceToObstacle = []
 turningAngle = []
 success_counter = 0
+
 robot = Robot(start=start, cell_size=cell_size,
               decisionMaker=QLearning(cell_size=cell_size, env_size=env_size, env_padding=env_padding, goal=goal)
               if isTraining else None)
