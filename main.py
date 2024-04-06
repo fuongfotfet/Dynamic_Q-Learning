@@ -9,18 +9,22 @@ from MapData import maps
 
 # Choose the version of the algorithm:
 # 1 for Conventional Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning
-version = input("Enter version: ")
+version = input("Enter version (1-ConventionalQL, 2-DFQL, 3-CombinedQL, 4-DualQL): ")
 if version == "1":
     from controller.ConventionalQL import QLearning
+
     algorithm = "ConventionalQL"
 elif version == "2":
     from controller.DFQL import QLearning
+
     algorithm = "DFQL"
 elif version == "3":
     from controller.CombinedQL import QLearning
+
     algorithm = "CombinedQL"
 elif version == "4":
     from controller.DualQL import QLearning
+
     algorithm = "DualQL"
 else:
     algorithm = "Unknown"
@@ -49,11 +53,11 @@ env_padding = int(env_size * 0.06)
 path = []
 pathLength = 0
 distanceToObstacle = []
+turningAngle = []
 success_counter = 0
 robot = Robot(start=start, cell_size=cell_size,
               decisionMaker=QLearning(cell_size=cell_size, env_size=env_size, env_padding=env_padding, goal=goal)
-              if isTraining else ControllerTester(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
-                                                  goal=goal, scenario=scenario, current_map=input_map, version=version))
+              if isTraining else None)
 
 
 def draw_target(window, target) -> None:
@@ -76,6 +80,13 @@ def draw_grid(window, cell_size, env_size, env_padding) -> None:
         pygame.draw.line(window, BLACK, (env_padding, env_padding + i * cell_size),
                          (env_padding + env_size, env_padding + i * cell_size), 1)
 
+
+def get_sum_turning_angle(path):
+    total_angle = 0
+    for i in range(1, len(path) - 1):
+        angle = np.arctan2(path[i + 1][1] - path[i][1], path[i + 1][0] - path[i][0]) - np.arctan2(path[i][1] - path[i - 1][1], path[i][0] - path[i - 1][0])
+        total_angle += np.abs(angle)
+    return total_angle
 
 def main(test_map):
     global success_counter, pathLength
@@ -118,7 +129,7 @@ def main(test_map):
 
         # Pause
         button2 = pygame.draw.rect(screen, BLACK, (LEFT_PAD + int(env_width * 0.4), NORTH_PAD * 2 + env_height,
-                                                    int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
+                                                   int(env_width * 0.2), int(SOUTH_PAD * 0.4)), 4)
         button2_text = my_font.render("Pause", True, (0, 0, 0))
         button2_rect = button2_text.get_rect(center=button2.center)
         screen.blit(button2_text, button2_rect)
@@ -137,7 +148,7 @@ def main(test_map):
                 elif button2.collidepoint(mouse_x, mouse_y):
                     pause = not pause
 
-        if started or isTraining:
+        if started or numsOfRuns > 1:
             if pause:
                 continue
             else:
@@ -170,7 +181,7 @@ def main(test_map):
                 if not isTraining:
                     # print(robot.getDistanceToClosestObstacle(obstacles_list))
                     distanceToObstacle.append(robot.getDistanceToClosestObstacle(obstacles_list))
-                    time.sleep(0.02)
+                    # time.sleep(0.02)
 
                 # Check if the robot has reached the goal
                 if robot.reach(goal):
@@ -194,8 +205,8 @@ if __name__ == '__main__':
 
     if isTraining:
         for i in range(numsOfRuns):
+            print(f"Run {i + 1}")
             for j in range(epochs):
-                print(f"Run {i + 1}, Epoch {j + 1}")
                 path.clear()
                 pathLength = 0
                 main(scenario + input_map)
@@ -209,22 +220,34 @@ if __name__ == '__main__':
             # Reinitialize the controller
             robot.resetController()
     else:
-        main(scenario + input_map)
+        for i in range(numsOfRuns):
+            robot.decisionMaker = ControllerTester(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
+                                                   goal=goal, scenario=scenario, current_map=input_map,
+                                                   algorithm=algorithm, run=i + 1)
+            main(scenario + input_map)
 
-        print(f"Path length: {pathLength}")
-        print(f"Average distance to obstacle: {np.mean(distanceToObstacle)}")
+            print(f"Run {i + 1}")
+            print(f"Path length: {pathLength}")
+            print(f"Average turning angle: {get_sum_turning_angle(path)}")
+            print(f"Average distance to obstacle: {np.mean(distanceToObstacle)}")
+            print("--------------------")
 
-        with open(f"result/{scenario}/{scenario + input_map}/{algorithm}/metric.txt", "a") as f:
-            f.write(scenario + input_map + ": " + "version" + str(version) + " " + str(pathLength) + " " + str(
-                np.mean(distanceToObstacle)))
-            if success_counter == 0:
-                f.write(" Fail")
-            f.write("\n")
+            with open(f"result/{scenario}/{scenario + input_map}/{algorithm}/metric.txt", "a") as f:
+                f.write(scenario + input_map + ": " + "version" + str(version) + " " + str(pathLength) + " "
+                        + str(get_sum_turning_angle(path)) + " " + str(np.mean(distanceToObstacle)))
+                if success_counter == 0:
+                    f.write(" Fail")
+                f.write("\n")
 
-        with open(f"result/{scenario}/{scenario + input_map}/{algorithm}/path.txt", "a") as f:
-            f.write(str(path))
-            f.write("\n")
+            with open(f"result/{scenario}/{scenario + input_map}/{algorithm}/path.txt", "a") as f:
+                f.write(str(path))
+                f.write("\n")
 
-        time.sleep(5)
+            time.sleep(3)
+
+            path.clear()
+            pathLength = 0
+            distanceToObstacle.clear()
+            success_counter = 0
 
     pygame.quit()

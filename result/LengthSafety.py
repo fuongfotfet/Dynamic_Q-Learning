@@ -1,60 +1,60 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
+from MapData import maps
 
-length = [[] for i in range(2)]
-safety = [[] for j in range(2)]
 
-with open('../controller/metric.txt', 'r') as file:
-    datas = file.readlines()
+def calculateDistanceToGoal(start, goal) -> float:
+    # Use diagonal distance bacause of action space
+    x, y = goal[0] - start[0], goal[1] - start[1]
+    return np.abs(x - y) + np.sqrt(2) * min(np.abs(x), np.abs(y))
 
-for data in datas:
-    if data[0] == '-':
-        continue
 
-    split_data = data.split()
+index_algorithm = {0: "ConventionalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL"}
 
-    if split_data[1] == 'version2':
-        if split_data[-1] == 'Fail':
-            length[0].append(0)
-            safety[0].append(0)
-        else:
-            length[0].append(float(split_data[2]))
-            safety[0].append(float(split_data[3]))
+scenario = input("Enter scenario (uniform/diverse/complex): ")
+current_map = scenario + input("Enter map (1/2/3): ")
 
-    elif split_data[1] == 'version3':
-        if split_data[-1] == 'Fail':
-            length[1].append(0)
-            safety[1].append(0)
-        else:
-            length[1].append(float(split_data[2]))
-            safety[1].append(float(split_data[3]))
 
-# plot the length as a bar graph, 2 bars for each map
-barWidth = 0.25
+start = maps[current_map]["Start"]
+goal = maps[current_map]["Goal"]
 
-br1 = np.arange(len(length[0]))
-br2 = [x + barWidth for x in br1]
+oracle_length = calculateDistanceToGoal(start, goal)
+oracle_angle = np.pi / 4
+oracle_safety = 1 / 40
 
-plt.bar(br1, length[0], color='r', width=barWidth, edgecolor='grey', label='QLver2')
-plt.bar(br2, length[1], color='b', width=barWidth, edgecolor='grey', label='QLver3')
 
-plt.xlabel('Map', fontweight='bold', fontsize='15')
-plt.ylabel('Length', fontweight='bold', fontsize='15')
-plt.xticks([r + barWidth for r in range(len(length[0]))], ['Map' + str(i) for i in range(1, len(length[0]) + 1)])
+algorithm = [[] for i in range(4)]
 
-plt.legend(fontsize='20')
-plt.show()
+for i in range(4):
+    success_length = []
+    success_angle = []
+    success_safety = []
+    fail_counter = 0
+    with open(f"{scenario}/{current_map}/{index_algorithm[i]}/metric.txt", "r") as f:
+        for line in f:
+            data = line.split()
+            if data[-1] == "Fail":
+                fail_counter += 1
+                success_length.append(0)
+                success_angle.append(0)
+                success_safety.append(0)
+            else:
+                success_length.append(oracle_length/ max(oracle_length, float(data[2])))
+                success_angle.append(oracle_angle / max(oracle_angle, float(data[3])))
+                success_safety.append(oracle_safety / max(oracle_safety, 1 / float(data[4])))
 
-# plot the safety as a bar graph, 2 bars for each map
-br1 = np.arange(len(safety[0]))
-br2 = [x + barWidth for x in br1]
+    algorithm[i].append(int((1 - (fail_counter / 20)) * 100 + 0.1))
+    algorithm[i].append(np.mean(success_length))
+    algorithm[i].append(np.mean(success_angle))
+    algorithm[i].append(np.mean(success_safety))
 
-plt.bar(br1, safety[0], color='r', width=barWidth, edgecolor='grey', label='version2')
-plt.bar(br2, safety[1], color='b', width=barWidth, edgecolor='grey', label='version3')
+print("\t\t\t Success Rate(%) \t Success Length \t Success Angle \t Success Safety")
+for i in range(4):
+    print(f"{index_algorithm[i]} \t\t {algorithm[i][0]} \t {np.mean(algorithm[i][1])} \t {np.mean(algorithm[i][2])} \t {np.mean(algorithm[i][3])}")
 
-plt.xlabel('Map', fontweight='bold', fontsize='15')
-plt.ylabel('Safety', fontweight='bold', fontsize='15')
-plt.xticks([r + barWidth for r in range(len(safety[0]))], ['Map' + str(i) for i in range(1, len(safety[0]) + 1)])
-
-plt.legend(fontsize='20')
-plt.show()
+if input("Save to xlsx? (y/n): ") == "y":
+    df = pd.DataFrame(algorithm, index=[index_algorithm[i] for i in range(4)],
+                      columns=["Success Rate(%)", "Success Length", "Success Angle", "Success Safety"])
+    df.to_excel(f"{scenario}/{current_map}/LengthAngleSafety.xlsx")
+    print("Saved to xlsx")

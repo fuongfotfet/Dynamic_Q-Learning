@@ -13,7 +13,7 @@ GAMMA = 0.9  # 0.8 to 0.9
 EPSILON = 0.5
 EPSILON_DECAY = 0.95
 
-ALPHA = 0.8  # 0.2 to 0.8
+ALPHA = 0.9  # 0.2 to 0.9
 LEARNING_RATE_DECAY = 1.0
 
 collisionDiscount = -10000

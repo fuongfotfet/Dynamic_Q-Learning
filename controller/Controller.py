@@ -100,6 +100,7 @@ class Controller:
         return i, j
 
     def makeDecision(self, rb) -> str:
+        print(self.convertState(rb))
         return self.policy[self.convertState(rb)]
 
     def makeObstacleDecision(self, rb, obstacle_position) -> str:
@@ -126,23 +127,24 @@ class Controller:
 
 
 class ControllerTester(Controller):
-    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, version):
+    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run):
         super().__init__(cell_size, env_size, env_padding, goal)
 
         # Load the policy from the file
-        with open(f"policy/{scenario}/{scenario + current_map}/QLver{version}/policy.json", "r") as f:
+        with open(f"policy/{scenario}/{scenario + current_map}/{algorithm}/{run}/policy.json", "r") as f:
             maps = json.load(f)
             for map in maps:
                 self.policy[tuple(map['key'])] = map['value']
 
 
 class ControllerTesterCombined(ControllerTester):
-    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, version):
-        super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, version)
+    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run):
+        super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run)
 
     def makeDecision(self, rb) -> str:
         state = self.convertState(rb)
         state = (state[0], state[1], -10, -10, -10)
+        print(state)
         return self.policy[state]
 
     def makeObstacleDecision(self, rb, obstacle_position) -> str:
@@ -167,16 +169,17 @@ class ControllerTesterCombined(ControllerTester):
 
         state = self.convertState(rb)
         state = (state[0], state[1], c_phi, c_deltaphi, c_deltad)
+        print(state)
         return self.policy[state]
 
 
 class ControllerTesterDual(ControllerTester):
-    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, version):
-        super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, version)
+    def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run):
+        super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run)
 
         self.obstaclePolicy = {}
         # Load the policy from the file
-        with open(f"policy/{scenario}/{scenario + current_map}/QLver{version}/obstaclePolicy.json", "r") as f:
+        with open(f"policy/{scenario}/{scenario + current_map}/{algorithm}/{run}/obstaclePolicy.json", "r") as f:
             maps = json.load(f)
             for map in maps:
                 self.obstaclePolicy[tuple(map['key'])] = map['value']

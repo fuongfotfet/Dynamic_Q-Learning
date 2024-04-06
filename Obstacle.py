@@ -13,6 +13,8 @@ class Obstacle(Object):
             self.v = np.array([0, 0])
         self.x_bound = (x - x_bound[0], x + x_bound[1])
         self.y_bound = (y - y_bound[0], y + y_bound[1])
+        self.original_x = x if not followPath else path[0][0]
+        self.original_y = y if not followPath else path[0][1]
         self.counter = 1
         self.history = []
         self.followPath = followPath
