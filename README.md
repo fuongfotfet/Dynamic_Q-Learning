@@ -1,1 +1,1 @@
-# Q-Learning for dynamic environments
+# Q-Learning for mobile robot in dynamic environments
