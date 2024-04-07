@@ -28,11 +28,9 @@ class QLearning(Controller):
         self.obstaclePolicy = {}
         self.obstacleEpisodeDecisions = []
         self.episodeDecisions = []
-        self.policyChanged = []
         self.sumOfRewards = []
         self.averageReward = []
         self.isObstacleDecisionMade = False
-        self.hasCollided = False
 
         self.reset()
 
@@ -42,10 +40,8 @@ class QLearning(Controller):
 
         self.episodeDecisions.clear()
         self.obstacleEpisodeDecisions.clear()
-        self.policyChanged.clear()
         self.sumOfRewards.clear()
         self.averageReward.clear()
-        self.hasCollided = False
 
         # Initialize Qtable and policy
         for i in range(int(self.env_size / self.cell_size)):
@@ -116,29 +112,97 @@ class QLearning(Controller):
                             self.obstacleQtable[(phi, delta_phi, delta_d, goal_direction, action)] = 0
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
-    def setCollision(self) -> None:
+    def setCollision(self, rb) -> None:
+        # Add collision discount to the "normal" decision if it made the decision which caused the collision
         if not self.isObstacleDecisionMade:
             if len(self.episodeDecisions) == 0:
                 return
-
-            self.hasCollided = True
 
             state, decision, reward = self.episodeDecisions[-1]
             reward += collisionDiscount
 
             self.episodeDecisions.pop()
             self.episodeDecisions.append((state, decision, reward))
+            self.episodeDecisions.append((self.convertState(rb), "", 0))
+        # Else add collision discount to the obstacle decision
         else:
             if len(self.obstacleEpisodeDecisions) == 0:
                 return
-
-            self.hasCollided = True
 
             state, decision, reward = self.obstacleEpisodeDecisions[-1]
             reward += collisionDiscount
 
             self.obstacleEpisodeDecisions.pop()
             self.obstacleEpisodeDecisions.append((state, decision, reward))
+            self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+
+        # Update Qtable and policy for both Q-Learning after collision
+        self.isObstacleDecisionMade = False
+        self.updateAll()
+        self.isObstacleDecisionMade = True
+        self.updateAll()
+
+        self.calculateReward()
+
+        # Clear episode decisions
+        self.episodeDecisions.clear()
+        self.obstacleEpisodeDecisions.clear()
+
+    # Add success reward to the last decision if the robot has reached the goal
+    def setSuccess(self) -> None:
+        # Decay epsilon
+        global EPSILON
+        EPSILON *= EPSILON_DECAY
+
+        # Add success reward to the "normal" decision if it made the decision which reaches the goal
+        if not self.isObstacleDecisionMade:
+            if len(self.episodeDecisions) == 0:
+                return
+
+            state, decision, reward = self.episodeDecisions[-1]
+            reward += successReward
+
+            self.episodeDecisions.pop()
+            self.episodeDecisions.append((state, decision, reward))
+
+            goal_pos = (int((self.goal[0] - self.env_padding) / self.cell_size),
+                        int((self.goal[1] - self.env_padding) / self.cell_size))
+            self.episodeDecisions.append((goal_pos, "", 0))
+        # Else add success reward to the obstacle decision
+        else:
+            if len(self.obstacleEpisodeDecisions) == 0:
+                return
+
+            state, decision, reward = self.obstacleEpisodeDecisions[-1]
+            reward += successReward
+
+            self.obstacleEpisodeDecisions.pop()
+            self.obstacleEpisodeDecisions.append((state, decision, reward))
+            self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+
+        # Update Qtable and policy for both Q-Learning after success
+        self.isObstacleDecisionMade = False
+        self.updateAll()
+        self.isObstacleDecisionMade = True
+        self.updateAll()
+
+        self.calculateReward()
+
+        # Clear episode decisions
+        self.episodeDecisions.clear()
+        self.obstacleEpisodeDecisions.clear()
+
+    # Calculate the sum of rewards and the average reward of the episode after the episode ends
+    def calculateReward(self) -> None:
+        sumOfReward = 0
+        for episodeDecision in self.episodeDecisions:
+            sumOfReward += episodeDecision[2]
+
+        for obstacleEpisodeDecision in self.obstacleEpisodeDecisions:
+            sumOfReward += obstacleEpisodeDecision[2]
+
+        self.sumOfRewards.append(sumOfReward)
+        self.averageReward.append(sumOfReward / (len(self.episodeDecisions) + len(self.obstacleEpisodeDecisions)))
 
     # Out put policy to json file
     def outputPolicy(self, scenario, current_map, run_index) -> None:
@@ -147,9 +211,6 @@ class QLearning(Controller):
 
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/obstaclePolicy.json", "w") as outfile:
             json.dump(remap_keys(self.obstaclePolicy), outfile, indent=2)
-
-        with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/policyChange.txt", "w") as outfile:
-            outfile.write(str(self.policyChanged))
 
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/sumOfRewards.txt", "w") as outfile:
             outfile.write(str(self.sumOfRewards))
@@ -199,62 +260,29 @@ class QLearning(Controller):
 
         self.obstaclePolicy[state] = bestAction
 
-    def updateAll(self, rb) -> None:
-        global EPSILON
+    def updateAll(self) -> None:
+        # If the last decision is a "normal" decision, update the Qtable and policy of the "normal" decision
+        if not self.isObstacleDecisionMade:
+            if len(self.episodeDecisions) >= 2:
+                state, decision, reward = self.episodeDecisions[-2]
+                next_state = self.episodeDecisions[-1][0]
 
-        # Add reward after success
-        if not self.hasCollided and len(self.episodeDecisions) > 0:
-            self.episodeDecisions[-1] = (
-                self.episodeDecisions[-1][0], self.episodeDecisions[-1][1],
-                self.episodeDecisions[-1][2] + successReward)
+                # Update Qtable
+                self.updateQtable(state, decision, reward, next_state)
 
-        # Add the last state to the episode decisions
-        last_state = self.convertState(rb)
-        self.episodeDecisions.append((last_state, "", 0))
-        self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+                # Update policy
+                self.updatePolicy(state)
+        # Else update the Qtable and policy of the obstacle decision
+        else:
+            if len(self.obstacleEpisodeDecisions) >= 2:
+                state, decision, reward = self.obstacleEpisodeDecisions[-2]
+                next_state = self.obstacleEpisodeDecisions[-1][0]
 
-        QvalueChange = 0
-        totalReward = 0
-        # Update Qtable and policy
-        for i in range(len(self.episodeDecisions) - 2, -1, -1):
-            state, decision, reward = self.episodeDecisions[i]
-            next_state = self.episodeDecisions[i + 1][0]
+                # Update Qtable
+                self.updateObstacleQtable(state, decision, reward, next_state)
 
-            totalReward += reward
-
-            # Update Qtable
-            QvalueChange += self.updateQtable(state, decision, reward, next_state)
-
-            # Update policy
-            self.updatePolicy(state)
-
-        # Update obstacle Qtable and policy
-        for i in range(len(self.obstacleEpisodeDecisions) - 2, -1, -1):
-            state, decision, reward = self.obstacleEpisodeDecisions[i]
-            next_state = self.obstacleEpisodeDecisions[i + 1][0]
-
-            totalReward += reward
-
-            # Update Qtable
-            QvalueChange += self.updateObstacleQtable(state, decision, reward, next_state)
-
-            # Update policy
-            self.updateObstaclePolicy(state)
-
-        # Calculate policy value change
-        self.policyChanged.append(QvalueChange)
-        self.sumOfRewards.append(totalReward)
-        self.averageReward.append(totalReward / (len(self.episodeDecisions) + len(self.obstacleEpisodeDecisions)))
-
-        # Clear episode decisions
-        self.episodeDecisions.clear()
-        self.obstacleEpisodeDecisions.clear()
-
-        # Dynamic epsilon
-        if not self.hasCollided:
-            EPSILON *= EPSILON_DECAY
-
-        self.hasCollided = False
+                # Update policy
+                self.updateObstaclePolicy(state)
 
     def makeDecision(self, rb) -> str:
         # Add reward to obstacle decision after successfully avoiding the obstacle
@@ -263,6 +291,10 @@ class QLearning(Controller):
                 self.obstacleEpisodeDecisions[-1][0], self.obstacleEpisodeDecisions[-1][1],
                 self.obstacleEpisodeDecisions[-1][2] + successReward)
 
+        # Update Qtable and policy for the last decision
+        self.updateAll()
+
+        # Reset the obstacle decision flag
         self.isObstacleDecisionMade = False
 
         state = self.convertState(rb)
@@ -296,6 +328,10 @@ class QLearning(Controller):
         return decision
 
     def makeObstacleDecision(self, rb, obstacle_position) -> str:
+        # Update Qtable and policy for the last decision
+        self.updateAll()
+
+        # Set the obstacle decision flag
         self.isObstacleDecisionMade = True
 
         # Get the position of the obstacle before and after moving

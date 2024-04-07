@@ -108,7 +108,10 @@ class Robot:
         return False
 
     def setDiscount(self) -> None:
-        self.decisionMaker.setCollision()
+        self.decisionMaker.setCollision(self)
+
+    def setSuccess(self) -> None:
+        self.decisionMaker.setSuccess()
 
     def nextPosition(self, goal) -> tuple:
         return goal
@@ -125,9 +128,6 @@ class Robot:
             self.moveDirection = decision_movement[decision]
 
             self.currentStep = 0
-
-    def updateQ(self) -> None:
-        self.decisionMaker.updateAll(self)
 
     def outputPolicy(self, scenario, current_map, run_index) -> None:
         self.decisionMaker.outputPolicy(scenario, current_map, run_index)

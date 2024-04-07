@@ -186,6 +186,7 @@ def main(test_map):
 
                 # Check if the robot has reached the goal
                 if robot.reach(goal):
+                    robot.setSuccess()
                     success_counter += 1
                     finished = True
 
@@ -211,7 +212,6 @@ if __name__ == '__main__':
                 path.clear()
                 pathLength = 0
                 main(scenario + input_map)
-                robot.updateQ()
 
                 # if success_counter >= 5:
                 #     break
