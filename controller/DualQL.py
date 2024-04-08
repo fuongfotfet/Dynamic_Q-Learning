@@ -154,11 +154,8 @@ class QLearning(Controller):
         global EPSILON
         EPSILON *= EPSILON_DECAY
 
-        # Add success reward to the "normal" decision if it made the decision which reaches the goal
-        if not self.isObstacleDecisionMade:
-            if len(self.episodeDecisions) == 0:
-                return
-
+        # Always add success reward to the last "normal" decision if success
+        if len(self.episodeDecisions) > 0:
             state, decision, reward = self.episodeDecisions[-1]
             reward += successReward
 
@@ -168,17 +165,17 @@ class QLearning(Controller):
             goal_pos = (int((self.goal[0] - self.env_padding) / self.cell_size),
                         int((self.goal[1] - self.env_padding) / self.cell_size))
             self.episodeDecisions.append((goal_pos, "", 0))
-        # Else add success reward to the obstacle decision
-        else:
-            if len(self.obstacleEpisodeDecisions) == 0:
-                return
 
-            state, decision, reward = self.obstacleEpisodeDecisions[-1]
-            reward += successReward
+        # Add success reward to the last obstacle decision if it makes the final decision
+        # In other words, the reward have not been added by func makeDecision
+        if self.isObstacleDecisionMade:
+            if len(self.obstacleEpisodeDecisions) > 0:
+                state, decision, reward = self.obstacleEpisodeDecisions[-1]
+                reward += successReward
 
-            self.obstacleEpisodeDecisions.pop()
-            self.obstacleEpisodeDecisions.append((state, decision, reward))
-            self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+                self.obstacleEpisodeDecisions.pop()
+                self.obstacleEpisodeDecisions.append((state, decision, reward))
+                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
 
         # Update Qtable and policy for both Q-Learning after success
         self.isObstacleDecisionMade = False
