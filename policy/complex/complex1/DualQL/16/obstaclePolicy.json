@@ -510,7 +510,7 @@
       0,
       0
     ],
-    "value": "down-left_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -519,7 +519,7 @@
       0,
       1
     ],
-    "value": "up_1"
+    "value": "down-right_1"
   },
   {
     "key": [
@@ -573,7 +573,7 @@
       0,
       7
     ],
-    "value": "down-left_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -726,7 +726,7 @@
       0,
       0
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1590,7 +1590,7 @@
       0,
       0
     ],
-    "value": "up-left_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -1599,7 +1599,7 @@
       0,
       1
     ],
-    "value": "up-right_1"
+    "value": "down-right_1"
   },
   {
     "key": [
@@ -1653,7 +1653,7 @@
       0,
       7
     ],
-    "value": "up-left_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -2670,7 +2670,7 @@
       0,
       0
     ],
-    "value": "up-right_1"
+    "value": "down_1"
   },
   {
     "key": [
@@ -2679,7 +2679,7 @@
       0,
       1
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2733,7 +2733,7 @@
       0,
       7
     ],
-    "value": "down-left_1"
+    "value": "down_1"
   },
   {
     "key": [
