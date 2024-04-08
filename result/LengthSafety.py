@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from MapData import maps
@@ -23,7 +22,6 @@ goal = maps[current_map]["Goal"]
 oracle_length = calculateDistanceToGoal(start, goal)
 oracle_angle = np.pi / 4
 oracle_safety = 40.0
-
 
 algorithm = [[] for i in range(4)]
 
