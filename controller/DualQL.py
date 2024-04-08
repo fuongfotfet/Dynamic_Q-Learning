@@ -115,26 +115,22 @@ class QLearning(Controller):
     def setCollision(self, rb) -> None:
         # Add collision discount to the "normal" decision if it made the decision which caused the collision
         if not self.isObstacleDecisionMade:
-            if len(self.episodeDecisions) == 0:
-                return
+            if len(self.episodeDecisions) > 0:
+                state, decision, reward = self.episodeDecisions[-1]
+                reward += collisionDiscount
 
-            state, decision, reward = self.episodeDecisions[-1]
-            reward += collisionDiscount
-
-            self.episodeDecisions.pop()
-            self.episodeDecisions.append((state, decision, reward))
-            self.episodeDecisions.append((self.convertState(rb), "", 0))
+                self.episodeDecisions.pop()
+                self.episodeDecisions.append((state, decision, reward))
+                self.episodeDecisions.append((self.convertState(rb), "", 0))
         # Else add collision discount to the obstacle decision
         else:
-            if len(self.obstacleEpisodeDecisions) == 0:
-                return
+            if len(self.obstacleEpisodeDecisions) > 0:
+                state, decision, reward = self.obstacleEpisodeDecisions[-1]
+                reward += collisionDiscount
 
-            state, decision, reward = self.obstacleEpisodeDecisions[-1]
-            reward += collisionDiscount
-
-            self.obstacleEpisodeDecisions.pop()
-            self.obstacleEpisodeDecisions.append((state, decision, reward))
-            self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+                self.obstacleEpisodeDecisions.pop()
+                self.obstacleEpisodeDecisions.append((state, decision, reward))
+                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
 
         # Update Qtable and policy for both Q-Learning after collision
         self.isObstacleDecisionMade = False
@@ -199,7 +195,7 @@ class QLearning(Controller):
             sumOfReward += obstacleEpisodeDecision[2]
 
         self.sumOfRewards.append(sumOfReward)
-        self.averageReward.append(sumOfReward / (len(self.episodeDecisions) + len(self.obstacleEpisodeDecisions)))
+        self.averageReward.append(sumOfReward / (len(self.episodeDecisions) + len(self.obstacleEpisodeDecisions) + 1e-6))
 
     # Out put policy to json file
     def outputPolicy(self, scenario, current_map, run_index) -> None:

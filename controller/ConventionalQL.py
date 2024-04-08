@@ -75,19 +75,17 @@ class QLearning(Controller):
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
     def setCollision(self, rb) -> None:
-        if len(self.episodeDecisions) == 0:
-            return
+        if len(self.episodeDecisions) > 0:
+            state, decision, reward = self.episodeDecisions[-1]
+            reward += collisionDiscount
 
-        state, decision, reward = self.episodeDecisions[-1]
-        reward += collisionDiscount
+            self.episodeDecisions.pop()
+            self.episodeDecisions.append((state, decision, reward))
+            self.episodeDecisions.append((self.convertState(rb), "", 0))
 
-        self.episodeDecisions.pop()
-        self.episodeDecisions.append((state, decision, reward))
-        self.episodeDecisions.append((self.convertState(rb), "", 0))
-
-        # Update Qtable and policy after collision
-        self.updateAll()
-        self.calculateReward()
+            # Update Qtable and policy after collision
+            self.updateAll()
+            self.calculateReward()
 
         # Clear episode decisions
         self.episodeDecisions.clear()
@@ -98,21 +96,20 @@ class QLearning(Controller):
         global EPSILON
         EPSILON *= EPSILON_DECAY
 
-        if len(self.episodeDecisions) == 0:
-            return
+        if len(self.episodeDecisions) > 0:
+            state, decision, reward = self.episodeDecisions[-1]
+            reward += successReward
 
-        state, decision, reward = self.episodeDecisions[-1]
-        reward += successReward
+            self.episodeDecisions.pop()
+            self.episodeDecisions.append((state, decision, reward))
 
-        self.episodeDecisions.pop()
-        self.episodeDecisions.append((state, decision, reward))
+            goal_pos = (int((self.goal[0] - self.env_padding) / self.cell_size),
+                        int((self.goal[1] - self.env_padding) / self.cell_size))
+            self.episodeDecisions.append((goal_pos, "", 0))
 
-        goal_pos = (int((self.goal[0] - self.env_padding) / self.cell_size), int((self.goal[1] - self.env_padding) / self.cell_size))
-        self.episodeDecisions.append((goal_pos, "", 0))
-
-        # Update Qtable and policy after success
-        self.updateAll()
-        self.calculateReward()
+            # Update Qtable and policy after success
+            self.updateAll()
+            self.calculateReward()
 
         # Clear episode decisions
         self.episodeDecisions.clear()
@@ -124,7 +121,7 @@ class QLearning(Controller):
             sumOfReward += episodeDecision[2]
 
         self.sumOfRewards.append(sumOfReward)
-        self.averageReward.append(sumOfReward / len(self.episodeDecisions))
+        self.averageReward.append(sumOfReward / (len(self.episodeDecisions) + 1e-6))
 
     # Out put policy to json file
     def outputPolicy(self, scenario, current_map, run_index) -> None:
