@@ -115,10 +115,10 @@ class Controller:
     def reset(self) -> None:
         pass
 
-    def setCollision(self) -> None:
+    def setCollision(self, rb) -> None:
         pass
 
-    def updateAll(self, rb) -> None:
+    def setSuccess(self) -> None:
         pass
 
     def outputPolicy(self, scenario, current_map, run_index) -> None:
