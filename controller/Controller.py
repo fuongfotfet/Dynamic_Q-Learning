@@ -99,10 +99,10 @@ class Controller:
 
         return i, j
 
-    def makeDecision(self, rb) -> str:
-        return self.policy[self.convertState(rb)]
+    def makeDecision(self, rb) -> tuple:
+        return decision_movement[self.policy[self.convertState(rb)]]
 
-    def makeObstacleDecision(self, rb, obstacle_position) -> str:
+    def makeObstacleDecision(self, rb, obstacle_position) -> tuple:
         return self.makeDecision(rb)
 
     def calculateDistanceToGoal(self, state) -> float:
@@ -140,12 +140,12 @@ class ControllerTesterCombined(ControllerTester):
     def __init__(self, cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run):
         super().__init__(cell_size, env_size, env_padding, goal, scenario, current_map, algorithm, run)
 
-    def makeDecision(self, rb) -> str:
+    def makeDecision(self, rb) -> tuple:
         state = self.convertState(rb)
         state = (state[0], state[1], -10, -10, -10)
-        return self.policy[state]
+        return decision_movement[self.policy[state]]
 
-    def makeObstacleDecision(self, rb, obstacle_position) -> str:
+    def makeObstacleDecision(self, rb, obstacle_position) -> tuple:
         # Get the position of the obstacle before and after moving
         # Then calculate the relative position of the obstacle to the robot
         obstacle_before = obstacle_position[0]
@@ -167,7 +167,7 @@ class ControllerTesterCombined(ControllerTester):
 
         state = self.convertState(rb)
         state = (state[0], state[1], c_phi, c_deltaphi, c_deltad)
-        return self.policy[state]
+        return decision_movement[self.policy[state]]
 
 
 class ControllerTesterDual(ControllerTester):
@@ -181,7 +181,7 @@ class ControllerTesterDual(ControllerTester):
             for map in maps:
                 self.obstaclePolicy[tuple(map['key'])] = map['value']
 
-    def makeObstacleDecision(self, rb, obstacle_position) -> str:
+    def makeObstacleDecision(self, rb, obstacle_position) -> tuple:
         # Get the position of the obstacle before and after moving
         # Then calculate the relative position of the obstacle to the robot
         obstacle_before = obstacle_position[0]
@@ -205,4 +205,4 @@ class ControllerTesterDual(ControllerTester):
         goal_direction = find_octant(rb.pos[0], rb.pos[1], self.goal)
 
         state = (c_phi, c_deltaphi, c_deltad, goal_direction)
-        return self.obstaclePolicy[state]
+        return decision_movement[self.obstaclePolicy[state]]

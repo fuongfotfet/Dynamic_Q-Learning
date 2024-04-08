@@ -1,6 +1,6 @@
 import pygame
 from Colors import *
-from controller.Controller import Controller, decision_movement
+from controller.Controller import Controller
 
 
 class Robot:
@@ -120,12 +120,12 @@ class Robot:
         # After the robot has moved for a certain number of steps, make a new decision and reset the step counter
         if self.currentStep >= self.numsOfSteps:
             obstacle = self.detect(obstacles_list)
-            if obstacle is not None:
-                decision = self.decisionMaker.makeObstacleDecision(self, obstacle)
-            else:
-                decision = self.decisionMaker.makeDecision(self)
 
-            self.moveDirection = decision_movement[decision]
+            # If there is an obstacle, make a decision based on the obstacle
+            if obstacle is not None:
+                self.moveDirection = self.decisionMaker.makeObstacleDecision(self, obstacle)
+            else:
+                self.moveDirection = self.decisionMaker.makeDecision(self)
 
             self.currentStep = 0
 

@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import random
-from controller.Controller import Controller, action_space, remap_keys
+from controller.Controller import Controller, action_space, remap_keys, decision_movement
 
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9
@@ -137,17 +137,13 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state) -> float:
+    def updateQtable(self, state, decision, reward, next_state) -> None:
         # Optimal value of next state
         optimalQnext = max([self.Qtable[(next_state[0], next_state[1], action)] for action in action_space])
 
-        prevQ = self.Qtable[(state[0], state[1], decision)]
         # Update Qtable
         self.Qtable[(state[0], state[1], decision)] = (1 - ALPHA) * self.Qtable[
             (state[0], state[1], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
-
-        # Calculate change in Q value
-        return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
     def updatePolicy(self, state) -> None:
         # Update policy
@@ -166,7 +162,7 @@ class QLearning(Controller):
             # Update policy
             self.updatePolicy(state)
 
-    def makeDecision(self, rb) -> str:
+    def makeDecision(self, rb) -> tuple:
         self.updateAll()
 
         state = self.convertState(rb)
@@ -183,4 +179,4 @@ class QLearning(Controller):
         # Reward is -1 to minimize the number of steps
         self.episodeDecisions.append((state, decision, -1))
 
-        return decision
+        return decision_movement[decision]

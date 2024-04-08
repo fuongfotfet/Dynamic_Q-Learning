@@ -155,17 +155,13 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/DFQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state) -> float:
+    def updateQtable(self, state, decision, reward, next_state) -> None:
         # Optimal value of next state
         optimalQnext = max([self.Qtable[(next_state[0], next_state[1], action)] for action in action_space])
 
-        prevQ = self.Qtable[(state[0], state[1], decision)]
         # Update Qtable
         self.Qtable[(state[0], state[1], decision)] = (1 - ALPHA) * self.Qtable[
             (state[0], state[1], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
-
-        # Calculate change in Q value
-        return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
     def updatePolicy(self, state) -> None:
         # Update policy
@@ -184,7 +180,7 @@ class QLearning(Controller):
             # Update policy
             self.updatePolicy(state)
 
-    def makeDecision(self, rb) -> str:
+    def makeDecision(self, rb) -> tuple:
         self.updateAll()
 
         state = self.convertState(rb)
@@ -219,4 +215,4 @@ class QLearning(Controller):
         # Add to episode decisions
         self.episodeDecisions.append((state, decision, reward))
 
-        return decision
+        return decision_movement[decision]

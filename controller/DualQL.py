@@ -1,8 +1,8 @@
 import json
 import numpy as np
 import random
-from controller.Controller import Controller, action_space, decision_movement, convertphi, convertdeltaphi, convertdeltad, angle, \
-    remap_keys, find_octant
+from controller.Controller import Controller, action_space, decision_movement, convertphi, convertdeltaphi, \
+    convertdeltad, angle, remap_keys, find_octant
 
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9
@@ -218,19 +218,13 @@ class QLearning(Controller):
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
-    def updateQtable(self, state, decision, reward, next_state) -> float:
+    def updateQtable(self, state, decision, reward, next_state) -> None:
         # Optimal value of next state
-        optimalQnext = max(
-            [self.Qtable[(next_state[0], next_state[1], action)] for action
-             in action_space])
+        optimalQnext = max([self.Qtable[(next_state[0], next_state[1], action)] for action in action_space])
 
-        prevQ = self.Qtable[(state[0], state[1], decision)]
         # Update Qtable
         self.Qtable[(state[0], state[1], decision)] = (1 - ALPHA) * self.Qtable[
             (state[0], state[1], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
-
-        # Calculate change in Q value
-        return abs(self.Qtable[(state[0], state[1], decision)] - prevQ)
 
     def updatePolicy(self, state) -> None:
         # Update policy
@@ -239,19 +233,14 @@ class QLearning(Controller):
 
         self.policy[state] = bestAction
 
-    def updateObstacleQtable(self, state, decision, reward, next_state) -> float:
+    def updateObstacleQtable(self, state, decision, reward, next_state) -> None:
         # Optimal value of next state
-        optimalQnext = max(
-            [self.obstacleQtable[(next_state[0], next_state[1], next_state[2], next_state[3], action)] for action
-             in action_space])
+        optimalQnext = max([self.obstacleQtable[(next_state[0], next_state[1], next_state[2], next_state[3],
+                                                 action)] for action in action_space])
 
-        prevQ = self.obstacleQtable[(state[0], state[1], state[2], next_state[3], decision)]
         # Update Qtable
         self.obstacleQtable[(state[0], state[1], state[2], next_state[3], decision)] = (1 - ALPHA) * self.obstacleQtable[
             (state[0], state[1], state[2], next_state[3], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
-
-        # Calculate change in Q value
-        return abs(self.obstacleQtable[(state[0], state[1], state[2], next_state[3], decision)] - prevQ)
 
     def updateObstaclePolicy(self, state) -> None:
         # Update policy
@@ -284,7 +273,7 @@ class QLearning(Controller):
                 # Update policy
                 self.updateObstaclePolicy(state)
 
-    def makeDecision(self, rb) -> str:
+    def makeDecision(self, rb) -> tuple:
         # Add reward to obstacle decision after successfully avoiding the obstacle
         if self.isObstacleDecisionMade and len(self.obstacleEpisodeDecisions) > 0:
             self.obstacleEpisodeDecisions[-1] = (
@@ -325,9 +314,9 @@ class QLearning(Controller):
         # Add to episode decisions
         self.episodeDecisions.append((state, decision, reward))
 
-        return decision
+        return decision_movement[decision]
 
-    def makeObstacleDecision(self, rb, obstacle_position) -> str:
+    def makeObstacleDecision(self, rb, obstacle_position) -> tuple:
         # Update Qtable and policy for the last decision
         self.updateAll()
 
@@ -343,8 +332,10 @@ class QLearning(Controller):
         distance_to_obstacle_next = np.sqrt((rb.pos[0] - obstacle_after[0]) ** 2 + (rb.pos[1] - obstacle_after[1]) ** 2)
 
         rb_direction = rb.nextPosition(self.goal)
-        phi = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_before[0] - rb.pos[0], obstacle_before[1] - rb.pos[1])
-        phi_next = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_after[0] - rb.pos[0], obstacle_after[1] - rb.pos[1])
+        phi = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_before[0] - rb.pos[0],
+                    obstacle_before[1] - rb.pos[1])
+        phi_next = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_after[0] - rb.pos[0],
+                         obstacle_after[1] - rb.pos[1])
 
         # Convert to state
         c_phi = convertphi(phi / np.pi * 180)
@@ -387,4 +378,4 @@ class QLearning(Controller):
         # Add to episode decisions
         self.obstacleEpisodeDecisions.append((state, decision, reward))
 
-        return decision
+        return decision_movement[decision]
