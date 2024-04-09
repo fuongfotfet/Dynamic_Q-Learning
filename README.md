@@ -24,7 +24,7 @@ The interface will open, click `Static/Dynamic` to switch between static and dyn
 to create an obstacle. Static obstacles are black, dynamic obstacles are blue. Finally, click on the `Save` button to save the map.
 
 <p align="center">
-  <img src="README_images/MapCreatorInterface.png" width="60%" />
+  <img src="README_images/MapCreatorInterface.png" width="50%" />
 </p>
 
 The obstacles will be saved in `MapData.py` as follows:
@@ -70,7 +70,7 @@ The interface will open, click `Start` to run the code and `Pause` to pause/resu
 If`Automatically run 20 times?` is `y`, the code will run 20 times automatically without having to click `Start`.
 
 <p align="center">
-  <img src="README_images/MainInterface.png" width="60%" />
+  <img src="README_images/MainInterface.png" width="50%" />
 </p>
 
 ## Results
