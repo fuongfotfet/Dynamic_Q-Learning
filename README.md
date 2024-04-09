@@ -23,7 +23,9 @@ python MapCreator.py
 The interface will open, click `Static/Dynamic` to switch between static and dynamic obstacles then drag on the grid with left mouse
 to create an obstacle. Static obstacles are black, dynamic obstacles are blue. Finally, click on the `Save` button to save the map.
 
-<center><img src="README_images/MapCreatorInterface.png" alt="drawing" width="60%"/></center>
+<p align="center">
+  <img src="README_images/MapCreatorInterface.png" width="60%" />
+</p>
 
 The obstacles will be saved in `MapData.py` as follows:
 ```
@@ -67,7 +69,9 @@ Note: `Enter version` receives a number from 1 to 4 and if `Automatically run 20
 The interface will open, click `Start` to run the code and `Pause` to pause/resume the simulation. 
 If`Automatically run 20 times?` is `y`, the code will run 20 times automatically without having to click `Start`.
 
-<center><img src="README_images/MainInterface.png" alt="drawing" width="60%"/></center>
+<p align="center">
+  <img src="README_images/MainInterface.png" width="60%" />
+</p>
 
 ## Results
 After running the code in `training mode`, the policy and the reward of each episode will be saved in the `policy` folder.
