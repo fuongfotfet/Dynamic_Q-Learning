@@ -29,9 +29,9 @@ for i in range(4):
 
         # Take the natural logarithm of the cumulative reward
         if reward > 0:
-            processed_data[i].append(np.log(reward))
+            processed_data[i].append(np.log(reward + 1))
         else:
-            processed_data[i].append(-np.log(-reward))
+            processed_data[i].append(-np.log(-reward + 1))
 
 # plot the data as a line graph
 plt.xlabel('Epoch', fontsize='20')
