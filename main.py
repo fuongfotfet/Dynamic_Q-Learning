@@ -8,24 +8,28 @@ from Colors import *
 from MapData import maps
 
 # Choose the version of the algorithm:
-# 1 for Conventional Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning
-version = input("Enter version (1-ConventionalQL, 2-DFQL, 3-CombinedQL, 4-DualQL): ")
+# 1 for Conventional Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA
+version = input("Enter version (1-ConventionalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA): ")
 if version == "1":
-    from controller.ConventionalQL import QLearning
+    from controller.ConventionalQL import QLearning as Controller
 
     algorithm = "ConventionalQL"
 elif version == "2":
-    from controller.DFQL import QLearning
+    from controller.DFQL import QLearning as Controller
 
     algorithm = "DFQL"
 elif version == "3":
-    from controller.CombinedQL import QLearning
+    from controller.CombinedQL import QLearning as Controller
 
     algorithm = "CombinedQL"
 elif version == "4":
-    from controller.DualQL import QLearning
+    from controller.DualQL import QLearning as Controller
 
     algorithm = "DualQL"
+elif version == "5":
+    from controller.DWA import DynamicWindowApproach as Controller
+
+    algorithm = "DWA"
 else:
     algorithm = "Unknown"
 
@@ -36,7 +40,7 @@ elif version == "3":
 else:
     from controller.Controller import ControllerTester
 
-isTraining = input("Training? (y/n): ") == "y"
+isTraining = version != "5" and input("Training? (y/n): ") == "y"
 # Scenario in one of: [uniform, diverse, complex]
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 # Input map from 1 to 3
@@ -57,8 +61,7 @@ turningAngle = []
 success_counter = 0
 
 robot = Robot(start=start, cell_size=cell_size,
-              decisionMaker=QLearning(cell_size=cell_size, env_size=env_size, env_padding=env_padding, goal=goal)
-              if isTraining else None)
+              decisionMaker=Controller(cell_size=cell_size, env_size=env_size, env_padding=env_padding, goal=goal))
 
 
 def draw_target(window, target) -> None:
@@ -85,9 +88,12 @@ def draw_grid(window, cell_size, env_size, env_padding) -> None:
 def get_sum_turning_angle(path):
     total_angle = 0
     for i in range(1, len(path) - 1):
-        angle = np.arctan2(path[i + 1][1] - path[i][1], path[i + 1][0] - path[i][0]) - np.arctan2(path[i][1] - path[i - 1][1], path[i][0] - path[i - 1][0])
+        vector1 = ([path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]])
+        vector2 = ([path[i + 1][0] - path[i][0], path[i + 1][1] - path[i][1]])
+        angle = np.arccos(np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2) + 1e-6))
         total_angle += np.abs(angle)
     return total_angle
+
 
 def main(test_map):
     global success_counter, pathLength
@@ -213,18 +219,17 @@ if __name__ == '__main__':
                 pathLength = 0
                 main(scenario + input_map)
 
-                # if success_counter >= 5:
-                #     break
-
             robot.outputPolicy(scenario, scenario + input_map, i + 1)
 
             # Reinitialize the controller
             robot.resetController()
     else:
         for i in range(numsOfRuns):
-            robot.decisionMaker = ControllerTester(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
-                                                   goal=goal, scenario=scenario, current_map=input_map,
-                                                   algorithm=algorithm, run=i + 1)
+            # Initialize the controller tester for QL (ver 1-4) for each run
+            if version != "5":
+                robot.decisionMaker = ControllerTester(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
+                                                       goal=goal, scenario=scenario, current_map=input_map,
+                                                       algorithm=algorithm, run=i + 1)
             main(scenario + input_map)
 
             print(f"Run {i + 1}")

@@ -9,7 +9,7 @@ def calculateDistanceToGoal(start, goal) -> float:
     return np.abs(x - y) + np.sqrt(2) * min(np.abs(x), np.abs(y))
 
 
-index_algorithm = {0: "ConventionalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL"}
+index_algorithm = {0: "ConventionalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL", 4: "DWA"}
 
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 current_map = scenario + input("Enter map (1/2/3): ")
@@ -23,9 +23,9 @@ oracle_length = calculateDistanceToGoal(start, goal)
 oracle_angle = np.pi / 4
 oracle_safety = 40.0
 
-algorithm = [[] for i in range(4)]
+algorithm = [[] for i in range(len(index_algorithm))]
 
-for i in range(4):
+for i in range(len(index_algorithm)):
     success_length = []
     success_angle = []
     success_safety = []
@@ -54,12 +54,12 @@ for i in range(4):
 
 # Print the results
 print("\t\t\t Success Rate(%) \t Success Length \t Success Angle \t Success Safety")
-for i in range(4):
+for i in range(len(index_algorithm)):
     print(f"{index_algorithm[i]} \t\t {algorithm[i][0]} \t {np.mean(algorithm[i][1])} \t {np.mean(algorithm[i][2])} \t {np.mean(algorithm[i][3])}")
 
 # Save the results to xlsx
 if input("Save to xlsx? (y/n): ") == "y":
-    df = pd.DataFrame(algorithm, index=[index_algorithm[i] for i in range(4)],
+    df = pd.DataFrame(algorithm, index=[index_algorithm[i] for i in range(len(index_algorithm))],
                       columns=["Success Rate(%)", "Success Length", "Success Angle", "Success Safety"])
     df.to_excel(f"{scenario}/{current_map}/LengthAngleSafety.xlsx")
     print("Saved to xlsx")

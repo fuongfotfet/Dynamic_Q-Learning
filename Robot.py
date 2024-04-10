@@ -72,10 +72,10 @@ class Robot:
         if index != -1:
             # Get the current and next position of the closest obstacle
             closest_obstacle = obstacles_list[index]
-            current_position = (closest_obstacle.x, closest_obstacle.y)
+            current_position = (closest_obstacle.x, closest_obstacle.y, closest_obstacle.width, closest_obstacle.height)
 
             closest_obstacle.move()
-            next_position = (closest_obstacle.x, closest_obstacle.y)
+            next_position = (closest_obstacle.x, closest_obstacle.y, closest_obstacle.width, closest_obstacle.height)
             closest_obstacle.undo_move()
 
             return [current_position, next_position]
