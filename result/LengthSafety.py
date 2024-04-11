@@ -9,7 +9,7 @@ def calculateDistanceToGoal(start, goal) -> float:
     return np.abs(x - y) + np.sqrt(2) * min(np.abs(x), np.abs(y))
 
 
-index_algorithm = {0: "ConventionalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL", 4: "DWA"}
+index_algorithm = {0: "ClassicalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL", 4: "DWA"}
 
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 current_map = scenario + input("Enter map (1/2/3): ")

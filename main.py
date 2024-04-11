@@ -8,12 +8,12 @@ from Colors import *
 from MapData import maps
 
 # Choose the version of the algorithm:
-# 1 for Conventional Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA
-version = input("Enter version (1-ConventionalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA): ")
+# 1 for Classical Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA
+version = input("Enter version (1-ClassicalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA): ")
 if version == "1":
-    from controller.ConventionalQL import QLearning as Controller
+    from controller.ClassicalQL import QLearning as Controller
 
-    algorithm = "ConventionalQL"
+    algorithm = "ClassicalQL"
 elif version == "2":
     from controller.DFQL import QLearning as Controller
 

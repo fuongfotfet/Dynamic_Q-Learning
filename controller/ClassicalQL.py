@@ -125,13 +125,13 @@ class QLearning(Controller):
 
     # Out put policy to json file
     def outputPolicy(self, scenario, current_map, run_index) -> None:
-        with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/policy.json", "w") as outfile:
+        with open(f"policy/{scenario}/{current_map}/ClassicalQL/{run_index}/policy.json", "w") as outfile:
             json.dump(remap_keys(self.policy), outfile, indent=2)
 
-        with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/sumOfRewards.txt", "w") as outfile:
+        with open(f"policy/{scenario}/{current_map}/ClassicalQL/{run_index}/sumOfRewards.txt", "w") as outfile:
             outfile.write(str(self.sumOfRewards))
 
-        with open(f"policy/{scenario}/{current_map}/ConventionalQL/{run_index}/averageReward.txt", "w") as outfile:
+        with open(f"policy/{scenario}/{current_map}/ClassicalQL/{run_index}/averageReward.txt", "w") as outfile:
             outfile.write(str(self.averageReward))
 
     def updateQtable(self, state, decision, reward, next_state) -> None:

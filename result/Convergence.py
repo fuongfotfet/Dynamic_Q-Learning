@@ -5,7 +5,7 @@ import random
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 current_map = scenario + input("Enter map (1/2/3): ")
 
-index_algorithm = {0: "ConventionalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL"}
+index_algorithm = {0: "ClassicalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL"}
 
 # Choose a random run for each algorithm
 run = [random.randint(1, 20) for i in range(4)]
