@@ -192,10 +192,14 @@ class QLearning(Controller):
         # Calculate reward
         goal_pos = (
         (self.goal[0] - self.env_padding) / self.cell_size, (self.goal[1] - self.env_padding) / self.cell_size)
+
+        # Manhatten distance according to the paper
         distance = (np.abs(state[0] - goal_pos[0]) + np.abs(state[1] - goal_pos[1])) * self.cell_size
 
         movement = decision_movement[decision]
         next_state = (state[0] + movement[0], state[1] + movement[1])
+
+        # Manhatten distance according to the paper
         next_distance = (np.abs(next_state[0] - goal_pos[0]) + np.abs(next_state[1] - goal_pos[1])) * self.cell_size
 
         r_d = (distance - next_distance) / np.abs(distance - next_distance + 1e-6)
