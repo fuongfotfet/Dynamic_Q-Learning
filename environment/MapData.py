@@ -1,4 +1,4 @@
-from Obstacle import Obstacle
+from environment.Obstacle import Obstacle
 
 uniform = [
     {

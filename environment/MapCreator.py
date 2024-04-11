@@ -2,8 +2,8 @@ import sys
 import pygame
 import numpy as np
 from pygame.locals import *
-from Colors import *
-from Obstacle import Obstacle
+from environment.Colors import *
+from environment.Obstacle import Obstacle
 
 
 def draw_grid(window, cell_size, env_size, env_padding) -> None:

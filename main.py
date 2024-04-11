@@ -4,8 +4,8 @@ import time
 import numpy as np
 from pygame.locals import *
 from Robot import Robot
-from Colors import *
-from MapData import maps
+from environment.Colors import *
+from environment.MapData import maps
 
 # Choose the version of the algorithm:
 # 1 for Classical Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA

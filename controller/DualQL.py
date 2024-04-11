@@ -1,8 +1,8 @@
 import json
 import numpy as np
 import random
-from controller.Controller import Controller, action_space, decision_movement, convertphi, convertdeltaphi, \
-    convertdeltad, angle, remap_keys, find_octant
+from controller.Controller import (Controller, action_space, decision_movement, convertphi, convertdeltaphi,
+                                   convertdeltad, angle, remap_keys, find_octant)
 
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9

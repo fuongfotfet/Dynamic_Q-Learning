@@ -1,6 +1,5 @@
 import pygame
-import numpy as np
-from Colors import *
+from environment.Colors import *
 
 
 class Object:
