@@ -1,11 +1,16 @@
-import sys
 import pygame
 import time
 import numpy as np
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '\\controller')
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '\\environment')
 from pygame.locals import *
-from Robot import Robot
+from environment.Robot import Robot
 from environment.Colors import *
 from environment.MapData import maps
+
+
 
 # Choose the version of the algorithm:
 # 1 for Classical Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA

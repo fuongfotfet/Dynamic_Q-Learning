@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))) + '\\environment')
 from MapData import maps
 
 
@@ -31,7 +34,7 @@ for i in range(len(index_algorithm)):
     success_safety = []
     fail_counter = 0
 
-    with open(f"{scenario}/{current_map}/{index_algorithm[i]}/metric.txt", "r") as f:
+    with open(os.path.dirname(os.path.realpath(__file__)) + f"\\{scenario}\\{current_map}\\{index_algorithm[i]}\\metric.txt", "r") as f:
         for line in f:
             data = line.split()
 

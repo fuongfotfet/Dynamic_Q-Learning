@@ -1,7 +1,9 @@
-import sys
 import pygame
 import numpy as np
 from pygame.locals import *
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '\\environment')
 from environment.Colors import *
 from environment.Obstacle import Obstacle
 
@@ -68,7 +70,7 @@ while not finished:
             # Button 1: Save the obstacles into Obstacles.py and start the simulation
             if button1.collidepoint(mouse_x, mouse_y):
                 done = True
-                with open("MapData.py", 'a') as f:
+                with open("environment/MapData.py", 'a') as f:
                     f.write(",\n".join([o.__str__() for o in obstacles_list]))
                     finished = True
             # Button 3: Change the mode of the obstacles when drawing

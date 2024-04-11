@@ -1,5 +1,5 @@
 import pygame
-from environment.Colors import *
+from Colors import *
 from controller.Controller import Controller
 
 

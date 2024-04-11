@@ -53,18 +53,19 @@ x-axis is horizontal increasing from left to right, y-axis is vertical increasin
 ## Run the code
 To run the code, run the following command:
 ```bash
-python main.py
+python Simulation.py
 ```
 
 Then input in terminal as follows:
 ```
-Enter version (1-ConventionalQL, 2-DFQL, 3-CombinedQL, 4-DualQL):
+Enter version (1-ClassicalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA):
 Training? (y/n):
 Enter scenario (uniform/diverse/complex):
 Enter map (1/2/3):
 Automatically run 20 times? (y/n):
 ```
 Note: `Enter version` receives a number from 1 to 4 and if `Automatically run 20 times?` is `n`, the code will run only once.
+Also, if version is 5 (DWA), the code automatically chooses `testing mode`.
 
 The interface will open, click `Start` to run the code and `Pause` to pause/resume the simulation. 
 If`Automatically run 20 times?` is `y`, the code will run 20 times automatically without having to click `Start`.

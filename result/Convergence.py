@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import os
 
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 current_map = scenario + input("Enter map (1/2/3): ")
@@ -15,7 +16,8 @@ for i in range(4):
 # Read the sum of rewards from the file
 raw_data = [[] for i in range(4)]
 for i in range(4):
-    with open(f"../policy/{scenario}/{current_map}/{index_algorithm[i]}/{run[i]}/sumOfRewards.txt", "r") as f:
+    with open(os.path.dirname(os.path.dirname(os.path.realpath(__file__))) +
+              f"/policy/{scenario}/{current_map}/{index_algorithm[i]}/{run[i]}/sumOfRewards.txt", "r") as f:
         for line in f:
             # Read sum of rewards after removing '[' and ']' at the beginning and end of the line
             raw_data[i] = [float(x) for x in line[1:-1].split(", ")]
