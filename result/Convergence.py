@@ -9,13 +9,13 @@ current_map = scenario + input("Enter map (1/2/3): ")
 index_algorithm = {0: "ClassicalQL", 1: "DFQL", 2: "CombinedQL", 3: "DualQL"}
 
 # Choose a random run for each algorithm
-run = [random.randint(1, 20) for i in range(4)]
-for i in range(4):
+run = [random.randint(1, 20) for i in range(len(index_algorithm))]
+for i in range(len(index_algorithm)):
     print(f"{index_algorithm[i]}: Run {run[i]} chosen")
 
 # Read the sum of rewards from the file
-raw_data = [[] for i in range(4)]
-for i in range(4):
+raw_data = [[] for i in range(len(index_algorithm))]
+for i in range(len(index_algorithm)):
     with open(os.path.dirname(os.path.dirname(os.path.realpath(__file__))) +
               f"/policy/{scenario}/{current_map}/{index_algorithm[i]}/{run[i]}/sumOfRewards.txt", "r") as f:
         for line in f:
@@ -23,8 +23,8 @@ for i in range(4):
             raw_data[i] = [float(x) for x in line[1:-1].split(", ")]
 
 # Process the data
-processed_data = [[] for i in range(4)]
-for i in range(4):
+processed_data = [[] for i in range(len(index_algorithm))]
+for i in range(len(index_algorithm)):
     for j in range(1, len(raw_data[i]) + 1):
         # Calculate the cumulative reward
         reward = np.sum(raw_data[i][0:j]) / j
@@ -47,11 +47,11 @@ plt.tick_params(axis='both', which='minor', labelsize=12)
 plt.plot(processed_data[0], alpha=1.0, color='darkorange')
 plt.plot(processed_data[1], alpha=1.0, color='blue')
 plt.plot(processed_data[2], alpha=1.0, color='green')
-plt.plot(processed_data[3], alpha=1.0, color='darkred')
+plt.plot(processed_data[3], alpha=1.0, color='red')
 # plt.plot(raw_data[0], alpha=0.2, color='darkorange')
 # plt.plot(raw_data[1], alpha=0.2, color='blue')
 # plt.plot(raw_data[2], alpha=0.2, color='green')
 # plt.plot(raw_data[3], alpha=0.2, color='darkred')
 
-plt.legend([index_algorithm[i] for i in range(4)], loc='lower right', fontsize='20')
+plt.legend([index_algorithm[i] for i in range(len(index_algorithm))], loc='lower right', fontsize='20')
 plt.show()

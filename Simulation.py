@@ -108,6 +108,7 @@ def main(test_map):
     NORTH_PAD, SOUTH_PAD, LEFT_PAD, RIGHT_PAD = env_padding, 3 * env_padding, env_padding, env_padding
     SCREEN_WIDTH = env_width + LEFT_PAD + RIGHT_PAD
     SCREEN_HEIGHT = env_height + NORTH_PAD + SOUTH_PAD
+
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
     pygame.display.set_caption("Q-Learning Path Planning")
@@ -167,7 +168,7 @@ def main(test_map):
                 # Draw the obstacles
                 for obstacle in obstacles_list:
                     obstacle.move()
-                    obstacle.draw(screen)
+                    obstacle.draw(screen, with_past=False)
 
                 # Make decision and move
                 robot.makeDecision(obstacles_list)

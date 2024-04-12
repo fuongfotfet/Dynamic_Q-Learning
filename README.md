@@ -82,7 +82,7 @@ After running the code in `testing mode` (not `training mode`), the results and 
 ### Calculate metrics
 To calculate the metrics of a map, run the following command:
 ```bash
-python result/LengthSafety.py
+python result/LengthAngleSafety.py
 ```
 
 Then input in terminal as follows:
@@ -111,3 +111,31 @@ Then input in terminal as follows:
 Enter scenario (uniform/diverse/complex):
 Enter map (1/2/3):
 ```
+
+### Visualize the path
+To visualize the path of a map, run the following command:
+```bash
+python result/PathVisualization.py
+```
+
+Then input in terminal as follows:
+```
+Enter scenario (uniform/diverse/complex):
+Enter map (1/2/3):
+```
+
+The interface will open and choose the run of each algorithm randomly to visualize the path. 
+Click `Reset` to reset the obstacles (only in Complex scenario), 
+`Pause` to pause/resume the simulation, 
+and `Reload` to randomly choose another run for each algorithm.
+
+<p align="center">
+  <img src="README_images/PathVisualizationInterface.png" width="50%" />
+</p>
+
+The color of the path represents the algorithm as follows:
+- `Dark orange`: Classical Q-Learning
+- `Blue`: DFQL
+- `Green`: Combined Q-Learning
+- `Red`: Dual Q-Learning
+- `Purple`: DWA

@@ -22,9 +22,14 @@ class Obstacle(Object):
 
     def draw(self, window, with_past=True) -> None:
         if with_past:
-            for pos_x, pos_y in self.history[-5:]:
-                pygame.draw.rect(window, GREY,
-                                 (pos_x - self.width / 2, pos_y - self.height / 2, self.width, self.height))
+            # Take 5 most recent positions, each is 15 frames apart
+            for i in range(5):
+                index = len(self.history) - 1 - (15 * (i + 1))
+                if index >= 0:
+                    pos_x, pos_y = self.history[index]
+                    # Draw boundary of the obstacle in dashed line
+                    pygame.draw.rect(window, LIGHT_BLUE, (pos_x - self.width / 2, pos_y - self.height / 2, self.width, self.height), 3)
+
         color = BLACK if self.static else CYAN
         pygame.draw.rect(window, color, (self.x - self.width / 2, self.y - self.height / 2, self.width, self.height))
 
@@ -68,6 +73,7 @@ class Obstacle(Object):
         if self.followPath:
             self.x, self.y = self.path[0]
             self.counter = 1
+            self.history.clear()
 
     def undo_move(self) -> None:
         if len(self.history) > 0:
