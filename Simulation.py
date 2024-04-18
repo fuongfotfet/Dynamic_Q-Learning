@@ -192,9 +192,8 @@ def main(test_map):
 
                 # If training mode, speed up the simulation
                 if not isTraining:
-                    # print(robot.getDistanceToClosestObstacle(obstacles_list))
                     distanceToObstacle.append(robot.getDistanceToClosestObstacle(obstacles_list))
-                    # time.sleep(0.02)
+                    time.sleep(0.02)
 
                 # Check if the robot has reached the goal
                 if robot.reach(goal):

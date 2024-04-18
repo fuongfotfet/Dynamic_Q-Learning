@@ -102,53 +102,53 @@
       0,
       14
     ],
-    "value": "left_1"
+    "value": "down_1"
   },
   {
     "key": [
       0,
       15
-    ],
-    "value": "up_1"
-  },
-  {
-    "key": [
-      0,
-      16
-    ],
-    "value": "up-right_1"
-  },
-  {
-    "key": [
-      0,
-      17
-    ],
-    "value": "up-right_1"
-  },
-  {
-    "key": [
-      0,
-      18
-    ],
-    "value": "up-right_1"
-  },
-  {
-    "key": [
-      0,
-      19
-    ],
-    "value": "up-left_1"
-  },
-  {
-    "key": [
-      0,
-      20
     ],
     "value": "up_1"
   },
   {
     "key": [
       0,
+      16
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      17
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      18
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      19
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      20
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
       21
     ],
     "value": "up_1"
@@ -165,63 +165,63 @@
       0,
       23
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       0,
       24
-    ],
-    "value": "down-right_1"
-  },
-  {
-    "key": [
-      0,
-      25
-    ],
-    "value": "down-left_1"
-  },
-  {
-    "key": [
-      0,
-      26
-    ],
-    "value": "left_1"
-  },
-  {
-    "key": [
-      0,
-      27
-    ],
-    "value": "left_1"
-  },
-  {
-    "key": [
-      0,
-      28
-    ],
-    "value": "down_1"
-  },
-  {
-    "key": [
-      0,
-      29
     ],
     "value": "up_1"
   },
   {
     "key": [
       0,
+      25
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      26
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      27
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      0,
+      28
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      0,
+      29
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      0,
       30
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       0,
       31
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -326,70 +326,70 @@
       1,
       14
     ],
-    "value": "left_1"
+    "value": "down_1"
   },
   {
     "key": [
       1,
       15
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       17
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       18
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       19
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       20
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       21
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       22
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       1,
       23
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -403,49 +403,49 @@
       1,
       25
     ],
-    "value": "up-left_1"
-  },
-  {
-    "key": [
-      1,
-      26
-    ],
     "value": "up_1"
   },
   {
     "key": [
       1,
-      27
-    ],
-    "value": "up-left_1"
-  },
-  {
-    "key": [
-      1,
-      28
-    ],
-    "value": "down-left_1"
-  },
-  {
-    "key": [
-      1,
-      29
-    ],
-    "value": "down_1"
-  },
-  {
-    "key": [
-      1,
-      30
+      26
     ],
     "value": "up_1"
   },
   {
     "key": [
       1,
+      27
+    ],
+    "value": "up_1"
+  },
+  {
+    "key": [
+      1,
+      28
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      1,
+      29
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      1,
+      30
+    ],
+    "value": "up-right_1"
+  },
+  {
+    "key": [
+      1,
       31
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -550,42 +550,42 @@
       2,
       14
     ],
-    "value": "left_1"
+    "value": "down_1"
   },
   {
     "key": [
       2,
       15
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       17
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       18
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       19
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -599,21 +599,21 @@
       2,
       21
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       22
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       23
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -627,49 +627,49 @@
       2,
       25
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       26
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       27
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       28
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       2,
       29
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       2,
       30
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       2,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -774,119 +774,119 @@
       3,
       14
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       3,
       15
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       16
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       17
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       18
     ],
-    "value": "up_1"
+    "value": "left_1"
   },
   {
     "key": [
       3,
       19
     ],
-    "value": "right_1"
+    "value": "left_1"
   },
   {
     "key": [
       3,
       20
     ],
-    "value": "up-left_1"
+    "value": "down_1"
   },
   {
     "key": [
       3,
       21
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       22
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       23
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       24
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       25
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       26
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       27
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       28
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       3,
       29
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       3,
       30
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -998,126 +998,126 @@
       4,
       14
     ],
-    "value": "left_1"
+    "value": "down_1"
   },
   {
     "key": [
       4,
       15
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       17
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       18
     ],
-    "value": "up-right_1"
+    "value": "left_1"
   },
   {
     "key": [
       4,
       19
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       20
     ],
-    "value": "up_1"
+    "value": "down_1"
   },
   {
     "key": [
       4,
       21
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       22
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       23
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       24
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       25
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       26
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       27
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       28
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       4,
       29
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       4,
       30
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       4,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1222,28 +1222,28 @@
       5,
       14
     ],
-    "value": "down-left_1"
+    "value": "down_1"
   },
   {
     "key": [
       5,
       15
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       17
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -1257,91 +1257,91 @@
       5,
       19
     ],
-    "value": "up-right_1"
+    "value": "down_1"
   },
   {
     "key": [
       5,
       20
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       5,
       21
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       22
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       23
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       24
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       25
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       26
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       27
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       5,
       28
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       5,
       29
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       5,
       30
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       5,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1446,28 +1446,28 @@
       6,
       14
     ],
-    "value": "down-left_1"
+    "value": "down_1"
   },
   {
     "key": [
       6,
       15
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       17
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -1488,56 +1488,56 @@
       6,
       20
     ],
-    "value": "down-right_1"
+    "value": "down_1"
   },
   {
     "key": [
       6,
       21
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       22
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       23
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       24
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       25
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       26
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       6,
       27
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1558,14 +1558,14 @@
       6,
       30
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       6,
       31
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1670,7 +1670,7 @@
       7,
       14
     ],
-    "value": "down-right_1"
+    "value": "down_1"
   },
   {
     "key": [
@@ -1684,91 +1684,91 @@
       7,
       16
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       17
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       18
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       19
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       7,
       20
     ],
-    "value": "down-right_1"
+    "value": "down_1"
   },
   {
     "key": [
       7,
       21
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       22
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       23
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       24
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       25
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       26
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       27
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       7,
       28
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1782,14 +1782,14 @@
       7,
       30
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       7,
       31
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -1894,112 +1894,112 @@
       8,
       14
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       8,
       15
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       17
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       18
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       19
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       20
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       21
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       22
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       23
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       24
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       25
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       26
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       27
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       8,
       28
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       8,
       29
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2013,7 +2013,7 @@
       8,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2118,21 +2118,21 @@
       9,
       14
     ],
-    "value": "down-right_1"
+    "value": "down_1"
   },
   {
     "key": [
       9,
       15
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       16
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -2160,49 +2160,49 @@
       9,
       20
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       21
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       22
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       23
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       24
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       9,
       25
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       9,
       26
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2216,28 +2216,28 @@
       9,
       28
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       9,
       29
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       9,
       30
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       9,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2342,35 +2342,35 @@
       10,
       14
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       10,
       15
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       10,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       10,
       17
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       10,
       18
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -2384,84 +2384,84 @@
       10,
       20
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       10,
       21
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       22
     ],
-    "value": "up_1"
+    "value": "down_1"
   },
   {
     "key": [
       10,
       23
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       24
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       25
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       26
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       27
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       28
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       29
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       30
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       10,
       31
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2566,77 +2566,77 @@
       11,
       14
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
       11,
       15
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       11,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       11,
       17
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       11,
       18
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       11,
       19
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       11,
       20
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       11,
       21
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       11,
       22
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       11,
       23
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       11,
       24
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2657,14 +2657,14 @@
       11,
       27
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       11,
       28
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2678,7 +2678,7 @@
       11,
       30
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2734,14 +2734,14 @@
       12,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       12,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -2790,21 +2790,21 @@
       12,
       14
     ],
-    "value": "up-right_1"
+    "value": "down_1"
   },
   {
     "key": [
       12,
       15
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       12,
       16
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -2818,21 +2818,21 @@
       12,
       18
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       12,
       19
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       12,
       20
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2846,7 +2846,7 @@
       12,
       22
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2860,7 +2860,7 @@
       12,
       24
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2874,7 +2874,7 @@
       12,
       26
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2909,7 +2909,7 @@
       12,
       31
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2951,21 +2951,21 @@
       13,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       13,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       13,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -2979,14 +2979,14 @@
       13,
       9
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       13,
       10
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -3000,42 +3000,42 @@
       13,
       12
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       13,
       13
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       13,
       14
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       13,
       15
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       16
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       13,
       17
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3056,21 +3056,21 @@
       13,
       20
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       21
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       22
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3084,56 +3084,56 @@
       13,
       24
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       25
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       26
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       27
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       28
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       29
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       30
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       13,
       31
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3175,7 +3175,7 @@
       14,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -3189,28 +3189,28 @@
       14,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       14,
       8
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       14,
       9
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       14,
       10
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -3231,21 +3231,21 @@
       14,
       13
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       14,
       14
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       14,
       15
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -3259,14 +3259,14 @@
       14,
       17
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       18
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3280,21 +3280,21 @@
       14,
       20
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       21
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       22
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3308,35 +3308,35 @@
       14,
       24
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       25
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       26
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       27
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       28
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3350,14 +3350,14 @@
       14,
       30
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       14,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3399,14 +3399,14 @@
       15,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       15,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -3420,42 +3420,42 @@
       15,
       8
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       15,
       9
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       15,
       10
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       15,
       11
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       15,
       12
     ],
-    "value": "down-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       15,
       13
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -3469,42 +3469,42 @@
       15,
       15
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       16
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       17
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       18
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       19
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       20
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3539,21 +3539,21 @@
       15,
       25
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       26
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       27
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3567,21 +3567,21 @@
       15,
       29
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       30
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       15,
       31
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3630,63 +3630,63 @@
       16,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       16,
       7
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       16,
       8
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       16,
       9
     ],
-    "value": "up-left_1"
+    "value": "right_1"
   },
   {
     "key": [
       16,
       10
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       16,
       11
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       12
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       13
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       14
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3700,21 +3700,21 @@
       16,
       16
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       17
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       18
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3735,21 +3735,21 @@
       16,
       21
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       22
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       23
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3770,14 +3770,14 @@
       16,
       26
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       27
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3791,21 +3791,21 @@
       16,
       29
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       30
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       16,
       31
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3854,28 +3854,28 @@
       17,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       17,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       17,
       8
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       17,
       9
     ],
-    "value": "up-right_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -3889,49 +3889,49 @@
       17,
       11
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       12
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       13
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       14
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       15
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       16
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       17
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3952,7 +3952,7 @@
       17,
       20
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3966,7 +3966,7 @@
       17,
       22
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -3980,21 +3980,21 @@
       17,
       24
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       25
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       26
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4008,28 +4008,28 @@
       17,
       28
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       29
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       30
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       17,
       31
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4071,63 +4071,63 @@
       18,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       18,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       18,
       7
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       18,
       8
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       18,
       9
     ],
-    "value": "left_1"
+    "value": "right_1"
   },
   {
     "key": [
       18,
       10
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       11
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       12
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       13
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4141,21 +4141,21 @@
       18,
       15
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       16
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       17
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4169,14 +4169,14 @@
       18,
       19
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       20
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4197,21 +4197,21 @@
       18,
       23
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       24
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       25
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4225,35 +4225,35 @@
       18,
       27
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       28
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       29
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       30
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       18,
       31
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4295,112 +4295,112 @@
       19,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       19,
       6
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       19,
       7
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       19,
       8
     ],
-    "value": "up-right_1"
+    "value": "right_1"
   },
   {
     "key": [
       19,
       9
     ],
-    "value": "up-right_1"
+    "value": "right_1"
   },
   {
     "key": [
       19,
       10
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       11
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       12
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       13
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       14
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       15
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       16
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       17
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       18
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       19
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       20
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4414,70 +4414,70 @@
       19,
       22
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       23
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       24
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       25
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       26
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       27
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       28
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       29
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       19,
       30
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
       19,
       31
     ],
-    "value": "down-left_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -4505,133 +4505,133 @@
       20,
       3
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       4
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       5
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       6
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       8
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       20,
       9
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       10
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       11
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       12
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       13
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       14
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       15
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       16
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       17
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       18
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       19
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       20
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       20,
       21
     ],
-    "value": "down-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4729,63 +4729,63 @@
       21,
       3
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       4
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       5
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       6
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       7
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       8
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
       21,
       9
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       10
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       11
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4799,63 +4799,63 @@
       21,
       13
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       14
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       15
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       16
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       17
     ],
-    "value": "up-left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       18
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       19
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       20
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       21,
       21
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -4953,7 +4953,7 @@
       22,
       3
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -4981,21 +4981,21 @@
       22,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       22,
       8
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       9
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5023,56 +5023,56 @@
       22,
       13
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       14
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       15
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       16
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       17
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       18
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       19
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       22,
       20
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5191,7 +5191,7 @@
       23,
       5
     ],
-    "value": "up-right_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -5205,14 +5205,14 @@
       23,
       7
     ],
-    "value": "up-left_1"
+    "value": "right_1"
   },
   {
     "key": [
       23,
       8
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5247,7 +5247,7 @@
       23,
       13
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5261,42 +5261,42 @@
       23,
       15
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       23,
       16
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       23,
       17
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       23,
       18
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       23,
       19
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       23,
       20
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -5422,21 +5422,21 @@
       24,
       6
     ],
-    "value": "down-right_1"
+    "value": "right_1"
   },
   {
     "key": [
       24,
       7
     ],
-    "value": "up_1"
+    "value": "right_1"
   },
   {
     "key": [
       24,
       8
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5478,49 +5478,49 @@
       24,
       14
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       24,
       15
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       24,
       16
     ],
-    "value": "down_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       24,
       17
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       24,
       18
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       24,
       19
     ],
-    "value": "right_1"
+    "value": "up_1"
   },
   {
     "key": [
       24,
       20
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -5625,7 +5625,7 @@
       25,
       3
     ],
-    "value": "down_1"
+    "value": "down-right_1"
   },
   {
     "key": [
@@ -5639,7 +5639,7 @@
       25,
       5
     ],
-    "value": "up-left_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -5653,7 +5653,7 @@
       25,
       7
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5695,35 +5695,35 @@
       25,
       13
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       25,
       14
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       25,
       15
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       25,
       16
     ],
-    "value": "left_1"
+    "value": "up_1"
   },
   {
     "key": [
       25,
       17
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -5856,7 +5856,7 @@
       26,
       4
     ],
-    "value": "down_1"
+    "value": "right_1"
   },
   {
     "key": [
@@ -5898,7 +5898,7 @@
       26,
       10
     ],
-    "value": "up_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -5912,35 +5912,35 @@
       26,
       12
     ],
-    "value": "left_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       26,
       13
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       26,
       14
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       26,
       15
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       26,
       16
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -6101,42 +6101,42 @@
       27,
       7
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       27,
       8
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       27,
       9
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
       27,
       10
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
       27,
       11
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
       27,
       12
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -6332,7 +6332,7 @@
       28,
       8
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -6556,7 +6556,7 @@
       29,
       8
     ],
-    "value": "up-left_1"
+    "value": "up_1"
   },
   {
     "key": [

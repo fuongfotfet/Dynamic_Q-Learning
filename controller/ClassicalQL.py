@@ -3,6 +3,10 @@ import numpy as np
 import random
 from controller.Controller import Controller, action_space, remap_keys, decision_movement
 
+# This is the implementation of the Q-Learning algorithm
+# Jiang, Qi. "Path planning method of mobile robot based on Q-learning."
+# Journal of Physics: Conference Series. Vol. 2181. No. 1. IOP Publishing, 2022.
+
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9
 
@@ -12,8 +16,8 @@ EPSILON_DECAY = 0.95
 ALPHA = 0.9  # 0.2 to 0.9
 LEARNING_RATE_DECAY = 1.0
 
-collisionDiscount = -5
-successReward = 15
+collisionDiscount = -0.3
+successReward = 1
 
 
 class QLearning(Controller):
@@ -174,6 +178,6 @@ class QLearning(Controller):
 
         # Add to episode decisions
         # Reward is -1 to minimize the number of steps
-        self.episodeDecisions.append((state, decision, -1))
+        self.episodeDecisions.append((state, decision, 0))
 
         return decision_movement[decision]
