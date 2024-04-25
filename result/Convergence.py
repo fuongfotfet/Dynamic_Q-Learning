@@ -36,13 +36,13 @@ for i in range(len(index_algorithm)):
             processed_data[i].append(-np.log(-reward + 1))
 
 # plot the data as a line graph
-plt.xlabel('Epoch', fontsize='20')
-plt.ylabel('Cumulative Reward', fontsize='20')
-plt.title('Cumulative Reward of 4 QL approaches', fontsize='20')
+plt.xlabel('Epoch', fontsize='24')
+plt.ylabel('Natural logarithm of cumulative reward', fontsize='24')
+plt.title('Cumulative Reward of 4 QL approaches', fontsize='24')
 
 # We change the fontsize of minor ticks label
-plt.tick_params(axis='both', which='major', labelsize=16)
-plt.tick_params(axis='both', which='minor', labelsize=12)
+plt.tick_params(axis='both', which='major', labelsize=20)
+plt.tick_params(axis='both', which='minor', labelsize=16)
 
 plt.plot(processed_data[0], alpha=1.0, color='darkorange')
 plt.plot(processed_data[1], alpha=1.0, color='blue')
@@ -53,5 +53,5 @@ plt.plot(processed_data[3], alpha=1.0, color='red')
 # plt.plot(raw_data[2], alpha=0.2, color='green')
 # plt.plot(raw_data[3], alpha=0.2, color='darkred')
 
-plt.legend([index_algorithm[i] for i in range(len(index_algorithm))], loc='lower right', fontsize='20')
+plt.legend([index_algorithm[i] for i in range(len(index_algorithm))], loc='center right', bbox_to_anchor=(1, 0.25), fontsize='24')
 plt.show()
