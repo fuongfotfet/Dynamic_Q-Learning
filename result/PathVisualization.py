@@ -17,8 +17,8 @@ def draw_start(window, start) -> None:
     pygame.draw.circle(window, GREEN, start, 6, 0)
 
 
-def draw_path(window, path, color) -> None:
-    for i in range(1, len(path)):
+def draw_path(window, path, portion, color) -> None:
+    for i in range(1, int(len(path) * portion)):
         # Diagonal line has a thickness sqrt(2) higher than the horizontal or vertical line
         if path[i - 1][0] == path[i][0] or path[i - 1][1] == path[i][1]:
             pygame.draw.line(window, color, path[i - 1], path[i], 4)
@@ -66,6 +66,8 @@ if __name__ == "__main__":
     env_size = 512
     env_padding = int(env_size * 0.06)
     path = [[] for _ in range(len(index_algorithm))]
+    nums_of_section = 1
+    total_section = 3
 
     # Load the path
     load_path(path)
@@ -137,12 +139,19 @@ if __name__ == "__main__":
                 if button3.collidepoint(mouse_x, mouse_y):
                     for obstacle in obstacles_list:
                         obstacle.reset()
+
+            # If right arrow key is pressed, move the robot to the right
+            if event.type == KEYDOWN:
+                if event.key == K_RIGHT:
+                    nums_of_section = nums_of_section % total_section + 1
+                if event.key == K_LEFT:
+                    nums_of_section = nums_of_section - 1 if nums_of_section > 1 else total_section
         if pause:
             continue
         else:
             # Draw the path
             for i in range(len(index_algorithm)):
-                draw_path(screen, path[i], colors[i])
+                draw_path(screen, path[i], nums_of_section / total_section, colors[i])
 
             # Draw the obstacles
             for obstacle in obstacles_list:

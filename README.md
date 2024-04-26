@@ -128,6 +128,8 @@ The interface will open and choose the run of each algorithm randomly to visuali
 Click `Reset` to reset the obstacles (only in Complex scenario), 
 `Pause` to pause/resume the simulation, 
 and `Reload` to randomly choose another run for each algorithm.
+Use left/right arrow keys on keyboard to change the proportion of the path. 
+For example, if the proportion is 0.5, the path will be shown from the start to the middle.
 
 <p align="center">
   <img src="README_images/PathVisualizationInterface.png" width="50%" />
