@@ -67,7 +67,7 @@ if __name__ == "__main__":
     env_padding = int(env_size * 0.06)
     path = [[] for _ in range(len(index_algorithm))]
     nums_of_section = 1
-    total_section = 3
+    total_section = 4
 
     # Load the path
     load_path(path)
