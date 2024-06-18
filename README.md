@@ -27,14 +27,14 @@ to create an obstacle. Static obstacles are black, dynamic obstacles are blue. F
   <img src="README_images/MapCreatorInterface.png" width="50%" />
 </p>
 
-The obstacles will be saved in `MapData.py` as follows:
+The obstacles will be saved in `environment/MapData.py` as follows:
 ```
 Obstacle(343.0, 375.0, 208, 144, True, [0, 0]),
 Obstacle(342.5, 118.5, 47, 47, False, [1.7242331795219754, 0.3739710559659452]),
 Obstacle(119.0, 182.5, 48, 47, False, [1.3243442711683744, -0.06282929333491694])
 ```
 
-Edit the list of obstacles in `MapData.py` to create a new map: Add `Start` and `Goal` points, 
+Edit the list of obstacles in `environment/MapData.py` to create a new map: Add `Start` and `Goal` points, 
 put obstacles in `Obstacles` list, then add the data to a scenario or create a new one. The structure of the data is as follows:
 ```
 {
