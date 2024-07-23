@@ -8,6 +8,7 @@ This repository contains the code for algorithms designed to navigate mobile rob
 - **Proposed Algorithms**:
   - Combined Q-Learning (CombinedQL)
   - Dual Q-Learning (DualQL)
+
 The code is written in Python 3.10 and developed using PyCharm Community 2022.3.3. While the repository is packaged for terminal execution (instructions provided below), modifying the code is best done using the PyCharm IDE.
 
 ## Installation
