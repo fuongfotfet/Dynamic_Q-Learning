@@ -1,5 +1,14 @@
-# Q-Learning for mobile robot in dynamic environments
-This repository contains the code for the Q-Learning algorithm for a mobile robot in dynamic environments with moving obstacles. 
+# Q-Learning for mobile robot navigation in dynamic environments
+This repository contains the code for algorithms designed to navigate mobile robots in dynamic environments with moving obstacles. It includes:
+- **Baseline Algorithms**:
+  - Classical Q-Learning (ClassicalQL)
+  - Dynamic and Fast Q-Learning (DFQL)
+  - Dynamic Window Approach (DWA)
+
+- **Proposed Algorithms**:
+  - Combined Q-Learning (CombinedQL)
+  - Dual Q-Learning (DualQL)
+The code is written in Python 3.10 and developed using PyCharm Community 2022.3.3. While the repository is packaged for terminal execution (instructions provided below), modifying the code is best done using the PyCharm IDE.
 
 ## Installation
 To clone the repository, run the following command:
