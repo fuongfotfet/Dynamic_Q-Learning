@@ -483,7 +483,7 @@
       -1,
       5
     ],
-    "value": "down_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -510,7 +510,7 @@
       0,
       0
     ],
-    "value": "right_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -546,7 +546,7 @@
       0,
       4
     ],
-    "value": "up_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -555,7 +555,7 @@
       0,
       5
     ],
-    "value": "down_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -564,7 +564,7 @@
       0,
       6
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -1554,7 +1554,7 @@
       -1,
       4
     ],
-    "value": "up_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -1563,7 +1563,7 @@
       -1,
       5
     ],
-    "value": "down-right_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -1572,7 +1572,7 @@
       -1,
       6
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -1590,7 +1590,7 @@
       0,
       0
     ],
-    "value": "right_1"
+    "value": "down_1"
   },
   {
     "key": [
@@ -1626,7 +1626,7 @@
       0,
       4
     ],
-    "value": "right_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -1635,7 +1635,7 @@
       0,
       5
     ],
-    "value": "down_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -1644,7 +1644,7 @@
       0,
       6
     ],
-    "value": "down_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -1707,7 +1707,7 @@
       1,
       5
     ],
-    "value": "up_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -2499,7 +2499,7 @@
       0,
       5
     ],
-    "value": "up_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -2634,7 +2634,7 @@
       -1,
       4
     ],
-    "value": "right_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -2643,7 +2643,7 @@
       -1,
       5
     ],
-    "value": "down-right_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -2652,7 +2652,7 @@
       -1,
       6
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -2670,7 +2670,7 @@
       0,
       0
     ],
-    "value": "right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2679,7 +2679,7 @@
       0,
       1
     ],
-    "value": "down-right_1"
+    "value": "up-right_1"
   },
   {
     "key": [
@@ -2715,7 +2715,7 @@
       0,
       5
     ],
-    "value": "up-right_1"
+    "value": "up-left_1"
   },
   {
     "key": [
@@ -2724,7 +2724,7 @@
       0,
       6
     ],
-    "value": "up-right_1"
+    "value": "up_1"
   },
   {
     "key": [
@@ -2778,7 +2778,7 @@
       1,
       4
     ],
-    "value": "up_1"
+    "value": "left_1"
   },
   {
     "key": [
@@ -2787,7 +2787,7 @@
       1,
       5
     ],
-    "value": "up_1"
+    "value": "up-left_1"
   },
   {
     "key": [

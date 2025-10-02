@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
-from Colors import *
-from Object import Object
+from environment.Colors import *
+from environment.Object import Object
 
 
 class Obstacle(Object):

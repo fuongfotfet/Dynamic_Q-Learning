@@ -3,6 +3,7 @@ import time
 import numpy as np
 import os
 import sys
+import json
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '\\controller')
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '\\environment')
 from pygame.locals import *
@@ -13,8 +14,8 @@ from environment.MapData import maps
 
 
 # Choose the version of the algorithm:
-# 1 for Classical Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA
-version = input("Enter version (1-ClassicalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA): ")
+# 1 for Classical Q-Learning, 2 for DFQL, 3 for Combined Q-Learning, 4 for Dual Q-Learning, 5 for DWA, 6 for DQN
+version = input("Enter version (1-ClassicalQL, 2-DFQL, 3-CombinedQL, 4-DualQL, 5-DWA, 6-DQN): ")
 if version == "1":
     from controller.ClassicalQL import QLearning as Controller
 
@@ -35,6 +36,10 @@ elif version == "5":
     from controller.DWA import DynamicWindowApproach as Controller
 
     algorithm = "DWA"
+elif version == "6":
+    from controller.DQNController import QLearning as Controller
+
+    algorithm = "DQN"
 else:
     algorithm = "Unknown"
 
@@ -45,7 +50,7 @@ elif version == "3":
 else:
     from controller.Controller import ControllerTester
 
-isTraining = version != "5" and input("Training? (y/n): ") == "y"
+isTraining = version not in ["5"] and input("Training? (y/n): ") == "y"
 # Scenario in one of: [uniform, diverse, complex]
 scenario = input("Enter scenario (uniform/diverse/complex): ")
 # Input map from 1 to 3
@@ -65,8 +70,15 @@ distanceToObstacle = []
 turningAngle = []
 success_counter = 0
 
-robot = Robot(start=start, cell_size=cell_size,
-              decisionMaker=Controller(cell_size=cell_size, env_size=env_size, env_padding=env_padding, goal=goal))
+static_obs = [obs for obs in maps[scenario + input_map]["Obstacles"] if obs.static]
+controller = Controller(cell_size=cell_size,
+                        env_size=env_size,
+                        env_padding=env_padding,
+                        goal=goal,
+                        static_obstacles=static_obs)
+robot = Robot(start=start,
+              cell_size=cell_size,
+              decisionMaker=controller)
 
 
 def draw_target(window, target) -> None:
@@ -120,6 +132,9 @@ def main(test_map):
     pause = False
     started = False
     distanceStartGoal = np.sqrt((start[0] - goal[0]) ** 2 + (start[1] - goal[1]) ** 2)
+    prev_dist = distanceStartGoal         # ← thêm dòng này
+    no_improve_steps = 0                  # ← thêm dòng này
+    max_no_improve = 10                   # ← tối đa bao nhiêu bước không cải thiện thì terminate
     path.append(start)
 
     # Reset the robot
@@ -128,6 +143,8 @@ def main(test_map):
     # Load the obstacles
     if test_map in maps:
         obstacles_list = maps[test_map]["Obstacles"]
+
+    start_time = time.time()
 
     while not finished:
 
@@ -180,7 +197,16 @@ def main(test_map):
                 draw_path(screen, path, ORANGE)
 
                 # Check if the robot has collided with the obstacles or the robot stuck in local optima
-                if robot.checkCollision(obstacles_list) or pathLength > 5 * distanceStartGoal:
+                collision_detected = robot.checkCollision(obstacles_list) or pathLength > 10 * distanceStartGoal or time.time() - start_time > 60
+                goal_reached = robot.reach(goal)
+                
+                # DQN Training Integration
+                if version == "6" and hasattr(robot.decisionMaker, 'process_simulation_step'):
+                    robot.decisionMaker.process_simulation_step(
+                        robot, obstacles_list, goal_reached, collision_detected
+                    )
+                
+                if collision_detected:
                     robot.setDiscount()
                     success_counter = 0
                     finished = True
@@ -189,6 +215,7 @@ def main(test_map):
                 draw_start(screen, start)
                 draw_target(screen, goal)
                 robot.draw(screen)
+                # time.sleep(1)
 
                 # If training mode, speed up the simulation
                 if not isTraining:
@@ -196,7 +223,7 @@ def main(test_map):
                     time.sleep(0.02)
 
                 # Check if the robot has reached the goal
-                if robot.reach(goal):
+                if goal_reached:
                     robot.setSuccess()
                     success_counter += 1
                     finished = True
@@ -214,7 +241,7 @@ def main(test_map):
 
 
 if __name__ == '__main__':
-    epochs = 800
+    epochs = 1000
 
     if isTraining:
         for i in range(numsOfRuns):
@@ -225,16 +252,20 @@ if __name__ == '__main__':
                 main(scenario + input_map)
 
             robot.outputPolicy(scenario, scenario + input_map, i + 1)
-
             # Reinitialize the controller
             robot.resetController()
     else:
         for i in range(numsOfRuns):
             # Initialize the controller tester for QL (ver 1-4) for each run
-            if version != "5":
+            if version not in ["5", "6"]:  # Classical QL algorithms
                 robot.decisionMaker = ControllerTester(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
-                                                       goal=goal, scenario=scenario, current_map=input_map,
+                                                       goal=goal, static_obstacles = static_obs, scenario=scenario, current_map=input_map,
                                                        algorithm=algorithm, run=i + 1)
+            elif version == "6":  # DQN testing
+                from controller.Controller import ControllerTesterDQN
+                robot.decisionMaker = ControllerTesterDQN(cell_size=cell_size, env_size=env_size, env_padding=env_padding,
+                                                          goal=goal, static_obstacles=static_obs, scenario=scenario, current_map=input_map,
+                                                          run=i + 1)
             main(scenario + input_map)
 
             print(f"Run {i + 1}")

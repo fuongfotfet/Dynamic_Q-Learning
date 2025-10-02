@@ -2,6 +2,61 @@ import json
 import numpy as np
 import random
 from controller.Controller import Controller, action_space, remap_keys, decision_movement
+import heapq
+import math
+
+def compute_distances(grid, goal_i, goal_j):
+    M = len(grid)
+    INF = float('inf')
+    dist = [[INF]*M for _ in range(M)]
+    dist[goal_j][goal_i] = 0.0
+    heap = [(0.0, goal_i, goal_j)]
+    neighbours = [
+        ( 1,  0, 1.0), (-1,  0, 1.0),
+        ( 0,  1, 1.0), ( 0, -1, 1.0),
+        ( 1,  1, math.sqrt(2)), ( 1, -1, math.sqrt(2)),
+        (-1,  1, math.sqrt(2)), (-1, -1, math.sqrt(2)),
+    ]
+
+    while heap:
+        cost, i, j = heapq.heappop(heap)
+        if cost > dist[j][i]:
+            continue
+        for di, dj, w in neighbours:
+            ni, nj = i + di, j + dj
+            if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0:
+                new_cost = cost + w
+                if new_cost < dist[nj][ni]:
+                    dist[nj][ni] = new_cost
+                    heapq.heappush(heap, (new_cost, ni, nj))
+    return dist
+
+def astar(grid, start, goal):
+    M = len(grid)
+    INF = M*M + 1
+    g = [[INF]*M for _ in range(M)]
+    visited = [[False]*M for _ in range(M)]
+    si, sj = start
+    gi, gj = goal
+    def h(i, j):
+        return max(abs(i-gi), abs(j-gj))
+    g[sj][si] = 0
+    heap = [(h(si, sj), 0, si, sj)]
+    while heap:
+        f, cost, i, j = heapq.heappop(heap)
+        if visited[j][i]:
+            continue
+        visited[j][i] = True
+        if (i, j) == (gi, gj):
+            return cost
+        for di, dj in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)]:
+            ni, nj = i+di, j+dj
+            if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0 and not visited[nj][ni]:
+                new_cost = cost + 1
+                if new_cost < g[nj][ni]:
+                    g[nj][ni] = new_cost
+                    heapq.heappush(heap, (new_cost + h(ni,nj), new_cost, ni, nj))
+    return INF
 
 # This is the implementation of the Q-Learning algorithm
 # Jiang, Qi. "Path planning method of mobile robot based on Q-learning."
@@ -10,7 +65,7 @@ from controller.Controller import Controller, action_space, remap_keys, decision
 # Hyperparameters
 GAMMA = 0.9  # 0.8 to 0.9
 
-EPSILON = 0.5
+EPSILON = 0.9
 EPSILON_DECAY = 0.95
 
 ALPHA = 0.9  # 0.2 to 0.9
@@ -21,9 +76,9 @@ successReward = 1
 
 
 class QLearning(Controller):
-    def __init__(self, cell_size, env_size, env_padding, goal):
+    def __init__(self, cell_size, env_size, env_padding, goal, static_obstacles=None):
         # Initialize Qtable and policy
-        super().__init__(cell_size, env_size, env_padding, goal)
+        super().__init__(cell_size, env_size, env_padding, goal, static_obstacles=static_obstacles)
         self.Qtable = {}
         self.episodeDecisions = []
         self.sumOfRewards = []
@@ -39,43 +94,71 @@ class QLearning(Controller):
         self.sumOfRewards.clear()
         self.averageReward.clear()
 
-        # Initialize Qtable and policy
-        for i in range(int(self.env_size / self.cell_size)):
-            for j in range(int(self.env_size / self.cell_size)):
-                # Initialize policy to always go to the goal, wherever the robot is
-                cell_center = (self.env_padding + self.cell_size / 2 + i * self.cell_size,
-                               self.env_padding + self.cell_size / 2 + j * self.cell_size)
-                direction = (self.goal[0] - cell_center[0], self.goal[1] - cell_center[1])
-                decision = ""
+        # 1) Build static occupancy grid
+        M = int(self.env_size / self.cell_size)
+        grid = [[0]*M for _ in range(M)]
+        for obs in self.static_obstacles:
+            x1, x2, y1, y2 = obs.return_coordinate()
+            i_min = max(0, int((x1 - self.env_padding)//self.cell_size))
+            i_max = min(M-1, int((x2 - self.env_padding)//self.cell_size))
+            j_min = max(0, int((y1 - self.env_padding)//self.cell_size))
+            j_max = min(M-1, int((y2 - self.env_padding)//self.cell_size))
+            for ii in range(i_min, i_max+1):
+                for jj in range(j_min, j_max+1):
+                    grid[jj][ii] = 1
 
-                # A 90-degree region is divided into 3 parts
-                # For example, 0 - 90: right, up-right, up
-                ratio = np.tan(np.pi / 8)
-                if abs(direction[1]) > ratio * abs(direction[0]):
-                    if direction[1] > 0:
-                        decision += "down"
+        # 2) Precompute dist via A* from each free cell to goal
+        goal_i = int((self.goal[0] - self.env_padding)//self.cell_size)
+        goal_j = int((self.goal[1] - self.env_padding)//self.cell_size)
+        self.dist_to_goal = compute_distances(grid, goal_i, goal_j)
+
+        dist = [[float('inf')]*M for _ in range(M)]
+        for i in range(M):
+            for j in range(M):
+                if grid[j][i] == 0:
+                    dist[j][i] = astar(grid, (i, j), (goal_i, goal_j))
+
+        # 3) Initialize policy & Qtable to drive around static walls
+        for i in range(M):
+            for j in range(M):
+                if grid[j][i] == 1:
+                    continue
+                best_act = None
+                best_d = dist[j][i]
+                for (di, dj), action in [((1,0),"right_1"),((-1,0),"left_1"),
+                                        ((0,1),"down_1"),((0,-1),"up_1"),
+                                        ((1,1),"down-right_1"),((1,-1),"up-right_1"),
+                                        ((-1,1),"down-left_1"),((-1,-1),"up-left_1")]:
+                    ni, nj = i+di, j+dj
+                    if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0 and dist[nj][ni] < best_d:
+                        best_d = dist[nj][ni]
+                        best_act = action
+                if best_act is None:
+                    cx = self.env_padding + self.cell_size/2 + i*self.cell_size
+                    cy = self.env_padding + self.cell_size/2 + j*self.cell_size
+                    dx, dy = self.goal[0] - cx, self.goal[1] - cy
+                    ratio = np.tan(np.pi / 8)
+                    if abs(dy) > ratio * abs(dx):
+                        best_act = "down_1" if dy > 0 else "up_1"
+                        if abs(dx) > ratio * abs(dy):
+                            best_act = "down-right_1" if dy > 0 and dx > 0 else "down-left_1" if dy > 0 else "up-right_1" if dx > 0 else "up-left_1"
                     else:
-                        decision += "up"
+                        best_act = "right_1" if dx > 0 else "left_1"
 
-                    if abs(direction[0]) > ratio * abs(direction[1]):
-                        if direction[0] > 0:
-                            decision += "-right"
-                        else:
-                            decision += "-left"
-                else:
-                    if direction[0] > 0:
-                        decision += "right"
-                    else:
-                        decision += "left"
+                ini_val = 1.0 / dist[j][i] if 0 < dist[j][i] < float('inf') else 0.0
 
-                # If the robot is too far from the goal, add 2 to the decision, else add 1
-                decision += "_1"
+                self.policy[(i, j)] = best_act
+                for act in action_space:
+                    self.Qtable[(i, j, act)] = ini_val
+        
+        for i in range(M):
+            for j in range(M):
+                if (i, j) not in self.policy:
+                    self.policy[(i, j)] = "up_1" 
 
-                self.policy[(i, j)] = decision
-
-                # Initialize Qtable with 0
-                for action in action_space:
-                    self.Qtable[(i, j, action)] = 0
+                for act in action_space:
+                    if (i, j, act) not in self.Qtable:
+                        self.Qtable[(i, j, act)] = 0.0
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
     def setCollision(self, rb) -> None:

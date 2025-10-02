@@ -1,14 +1,75 @@
+from collections import deque
 import json
+import time
 import numpy as np
 import random
 from controller.Controller import (Controller, action_space, decision_movement, convertphi, convertdeltaphi,
                                    convertdeltad, angle, remap_keys, find_octant)
+import heapq, math
+
+def compute_distances(grid, goal_i, goal_j):
+    M = len(grid)
+    INF = float('inf')
+    dist = [[INF]*M for _ in range(M)]
+    dist[goal_j][goal_i] = 0.0
+    heap = [(0.0, goal_i, goal_j)]
+    neighbours = [
+        ( 1,  0, 1.0), (-1,  0, 1.0),
+        ( 0,  1, 1.0), ( 0, -1, 1.0),
+        ( 1,  1, math.sqrt(2)), ( 1, -1, math.sqrt(2)),
+        (-1,  1, math.sqrt(2)), (-1, -1, math.sqrt(2)),
+    ]
+
+    while heap:
+        cost, i, j = heapq.heappop(heap)
+        if cost > dist[j][i]:
+            continue
+        for di, dj, w in neighbours:
+            ni, nj = i + di, j + dj
+            if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0:
+                new_cost = cost + w
+                if new_cost < dist[nj][ni]:
+                    dist[nj][ni] = new_cost
+                    heapq.heappush(heap, (new_cost, ni, nj))
+    return dist
+
+# A* initializer ---
+def astar(grid, start, goal):
+    M = len(grid)
+    INF = M*M + 1
+    g = [[INF]*M for _ in range(M)]
+    visited = [[False]*M for _ in range(M)]
+    si, sj = start
+    gi, gj = goal
+    def h(i, j):
+        return max(abs(i-gi), abs(j-gj))
+    g[sj][si] = 0
+    heap = [(h(si, sj), 0, si, sj)]
+    while heap:
+        f, cost, i, j = heapq.heappop(heap)
+        if visited[j][i]:
+            continue
+        visited[j][i] = True
+        if (i, j) == (gi, gj):
+            return cost
+        for di, dj in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)]:
+            ni, nj = i+di, j+dj
+            if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0 and not visited[nj][ni]:
+                new_cost = cost + 1
+                if new_cost < g[nj][ni]:
+                    g[nj][ni] = new_cost
+                    heapq.heappush(heap, (new_cost + h(ni,nj), new_cost, ni, nj))
+    return INF
+
 
 # Hyperparameters
-GAMMA = 0.9  # 0.8 to 0.9
+GAMMA = 0.8  # 0.8 to 0.9
 
-EPSILON = 0.5
+EPSILON = 0.3
 EPSILON_DECAY = 0.95
+
+EPSILON_OBS = 0.8
+EPSILON_OBS_DECAY = 0.99
 
 ALPHA = 0.9  # 0.2 to 0.9
 LEARNING_RATE_DECAY = 1.0
@@ -16,13 +77,10 @@ LEARNING_RATE_DECAY = 1.0
 collisionDiscount = -5
 successReward = 15
 
-OBSTACLE_REWARD_FACTOR = 0.2
-
-
 class QLearning(Controller):
-    def __init__(self, cell_size, env_size, env_padding, goal):
+    def __init__(self, cell_size, env_size, env_padding, goal, static_obstacles=None):
         # Initialize Qtable and policy
-        super().__init__(cell_size, env_size, env_padding, goal)
+        super().__init__(cell_size, env_size, env_padding, goal, static_obstacles=static_obstacles)
         self.Qtable = {}
         self.obstacleQtable = {}
         self.obstaclePolicy = {}
@@ -31,88 +89,118 @@ class QLearning(Controller):
         self.sumOfRewards = []
         self.averageReward = []
         self.isObstacleDecisionMade = False
-
+        self.safe_radius_cells = 2  
         self.reset()
 
     def reset(self) -> None:
-        global EPSILON
-        EPSILON = 0.5
+        global EPSILON, EPSILON_OBS
+        EPSILON = 0.3
+        EPSILON_OBS = 0.8
 
         self.episodeDecisions.clear()
         self.obstacleEpisodeDecisions.clear()
         self.sumOfRewards.clear()
         self.averageReward.clear()
 
-        # Initialize Qtable and policy
-        for i in range(int(self.env_size / self.cell_size)):
-            for j in range(int(self.env_size / self.cell_size)):
-                # Initialize policy to always go to the goal, wherever the robot is
-                cell_center = (self.env_padding + self.cell_size / 2 + i * self.cell_size, self.env_padding + self.cell_size / 2 + j * self.cell_size)
-                direction = (self.goal[0] - cell_center[0], self.goal[1] - cell_center[1])
-                decision = ""
+        # 1) Build static occupancy grid
+        M = int(self.env_size / self.cell_size)
+        grid = [[0]*M for _ in range(M)]
+        for obs in self.static_obstacles:
+            x1, x2, y1, y2 = obs.return_coordinate()
+            i_min = max(0, int((x1 - self.env_padding)//self.cell_size))
+            i_max = min(M-1, int((x2 - self.env_padding)//self.cell_size))
+            j_min = max(0, int((y1 - self.env_padding)//self.cell_size))
+            j_max = min(M-1, int((y2 - self.env_padding)//self.cell_size))
+            for ii in range(i_min, i_max+1):
+                for jj in range(j_min, j_max+1):
+                    grid[jj][ii] = 1
 
-                # A 90-degree region is divided into 3 parts
-                # For example, 0 - 90: right, up-right, up
-                ratio = np.tan(np.pi / 8)
-                if abs(direction[1]) > ratio * abs(direction[0]):
-                    if direction[1] > 0:
-                        decision += "down"
+        # 2) Precompute dist via A* from each free cell to goal
+        goal_i = int((self.goal[0] - self.env_padding)//self.cell_size)
+        goal_j = int((self.goal[1] - self.env_padding)//self.cell_size)
+        self.dist_to_goal = compute_distances(grid, goal_i, goal_j)
+
+        dist = [[float('inf')]*M for _ in range(M)]
+        for i in range(M):
+            for j in range(M):
+                if grid[j][i] == 0:
+                    dist[j][i] = astar(grid, (i, j), (goal_i, goal_j))
+
+        # 3) Initialize policy & Qtable to drive around static walls
+        for i in range(M):
+            for j in range(M):
+                if grid[j][i] == 1:
+                    continue  
+                best_act = None
+                best_d = dist[j][i]
+                for (di, dj), action in [((1,0),"right_1"),((-1,0),"left_1"),
+                                        ((0,1),"down_1"),((0,-1),"up_1"),
+                                        ((1,1),"down-right_1"),((1,-1),"up-right_1"),
+                                        ((-1,1),"down-left_1"),((-1,-1),"up-left_1")]:
+                    ni, nj = i+di, j+dj
+                    if 0 <= ni < M and 0 <= nj < M and grid[nj][ni] == 0 and dist[nj][ni] < best_d:
+                        best_d = dist[nj][ni]
+                        best_act = action
+                if best_act is None:
+                    cx = self.env_padding + self.cell_size/2 + i*self.cell_size
+                    cy = self.env_padding + self.cell_size/2 + j*self.cell_size
+                    dx, dy = self.goal[0] - cx, self.goal[1] - cy
+                    ratio = np.tan(np.pi / 8)
+                    if abs(dy) > ratio * abs(dx):
+                        best_act = "down_1" if dy > 0 else "up_1"
+                        if abs(dx) > ratio * abs(dy):
+                            best_act = "down-right_1" if dy > 0 and dx > 0 else "down-left_1" if dy > 0 else "up-right_1" if dx > 0 else "up-left_1"
                     else:
-                        decision += "up"
+                        best_act = "right_1" if dx > 0 else "left_1"
 
-                    if abs(direction[0]) > ratio * abs(direction[1]):
-                        if direction[0] > 0:
-                            decision += "-right"
-                        else:
-                            decision += "-left"
-                else:
-                    if direction[0] > 0:
-                        decision += "right"
-                    else:
-                        decision += "left"
+                ini_val = 1.0 / dist[j][i] if 0 < dist[j][i] < float('inf') else 0.0
 
-                # If the robot is too far from the goal, add 2 to the decision, else add 1
-                distance = self.calculateDistanceToGoal((i, j))
-                decision += "_1"
+                self.policy[(i, j)] = best_act
+                for act in action_space:
+                    self.Qtable[(i, j, act)] = ini_val
+        
+        for i in range(M):
+            for j in range(M):
+                if (i, j) not in self.policy:
+                    self.policy[(i, j)] = "up_1" 
 
-                # Initialize Qtable, value is higher if the robot is closer to the goal
-                if distance > 0:
-                    ini_value = self.cell_size / distance
-                else:
-                    ini_value = 0
-
-                self.policy[(i, j)] = decision
-
-                for action in action_space:
-                    self.Qtable[(i, j, action)] = ini_value
+                for act in action_space:
+                    if (i, j, act) not in self.Qtable:
+                        self.Qtable[(i, j, act)] = 0.0
 
         # Initialize ObstacleQtable and obstaclePolicy
-        for phi in range(3):
-            for delta_phi in range(-2, 3):  # DeltaPhi: C, LC, U, LA, A
-                for delta_d in range(-1, 2):  # DeltaD: C, U, A
-                    for goal_direction in range(8):
-                        if goal_direction == 0:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "right_1"
-                        elif goal_direction == 1:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "down-right_1"
-                        elif goal_direction == 2:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "down_1"
-                        elif goal_direction == 3:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "down-left_1"
-                        elif goal_direction == 4:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "left_1"
-                        elif goal_direction == 5:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "up-left_1"
-                        elif goal_direction == 6:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "up_1"
-                        elif goal_direction == 7:
-                            self.obstaclePolicy[(phi, delta_phi, delta_d, goal_direction)] = "up-right_1"
+        for c_phi in range(3):                    
+            for c_deltaphi in range(-2, 3):       
+                for c_deltad in range(-1, 2):     
+                    for goal_direction in range(8):          
+                        for nearest_obs_octant in range(8):  
+                            for nearest_obs_dist_bin in range(3):  
+                                if goal_direction == 0:
+                                    default = "right_1"
+                                elif goal_direction == 1:
+                                    default = "down-right_1"
+                                elif goal_direction == 2:
+                                    default = "down_1"
+                                elif goal_direction == 3:
+                                    default = "down-left_1"
+                                elif goal_direction == 4:
+                                    default = "left_1"
+                                elif goal_direction == 5:
+                                    default = "up-left_1"
+                                elif goal_direction == 6:
+                                    default = "up_1"
+                                else:  
+                                    default = "up-right_1"
 
-                        for action in action_space:
-                            self.obstacleQtable[(phi, delta_phi, delta_d, goal_direction, action)] = 0
+                                self.obstaclePolicy[(c_phi, c_deltaphi, c_deltad, goal_direction, nearest_obs_octant, nearest_obs_dist_bin)] = default
+
+                                for action in action_space:
+                                    self.obstacleQtable[(c_phi, c_deltaphi, c_deltad, goal_direction, nearest_obs_octant, nearest_obs_dist_bin, action)] = 0.0
 
     # Add collision discount to the last decision if the robot has collided with an obstacle
     def setCollision(self, rb) -> None:
+        global EPSILON_OBS
+        EPSILON_OBS *= EPSILON_OBS_DECAY
         # Add collision discount to the "normal" decision if it made the decision which caused the collision
         if not self.isObstacleDecisionMade:
             if len(self.episodeDecisions) > 0:
@@ -122,15 +210,40 @@ class QLearning(Controller):
                 self.episodeDecisions.pop()
                 self.episodeDecisions.append((state, decision, reward))
                 self.episodeDecisions.append((self.convertState(rb), "", 0))
+            if len(self.episodeDecisions) >= 3:
+                for i in range(-3, -1):
+                    s, a, r = self.episodeDecisions[i]
+                    ns    = self.episodeDecisions[i+1][0]
+                    self.updateQtable(s, a, r, ns)
+                    self.updatePolicy(s)
+            else:
+                for i in range(len(self.episodeDecisions)-1):
+                    s, a, r = self.episodeDecisions[i]
+                    ns    = self.episodeDecisions[i+1][0]
+                    self.updateQtable(s, a, r, ns)
+                    self.updatePolicy(s)
         # Else add collision discount to the obstacle decision
         else:
             if len(self.obstacleEpisodeDecisions) > 0:
                 state, decision, reward = self.obstacleEpisodeDecisions[-1]
-                reward += collisionDiscount
-
+                reward += collisionDiscount - 500  # Add more if the obstacle Q-table made the collision
+ 
                 self.obstacleEpisodeDecisions.pop()
                 self.obstacleEpisodeDecisions.append((state, decision, reward))
-                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0, 0, 2), "", 0))
+
+            if len(self.obstacleEpisodeDecisions) >= 3:
+                for i in range(-3, -1):
+                    s, a, r = self.obstacleEpisodeDecisions[i]
+                    ns    = self.obstacleEpisodeDecisions[i+1][0]
+                    self.updateObstacleQtable(s, a, r, ns)
+                    self.updateObstaclePolicy(s)
+            else:
+                for i in range(len(self.obstacleEpisodeDecisions)-1):
+                    s, a, r = self.obstacleEpisodeDecisions[i]
+                    ns    = self.obstacleEpisodeDecisions[i+1][0]
+                    self.updateObstacleQtable(s, a, r, ns)
+                    self.updateObstaclePolicy(s)
 
         # Update Qtable and policy for both Q-Learning after collision
         self.isObstacleDecisionMade = False
@@ -171,7 +284,7 @@ class QLearning(Controller):
 
                 self.obstacleEpisodeDecisions.pop()
                 self.obstacleEpisodeDecisions.append((state, decision, reward))
-                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0), "", 0))
+                self.obstacleEpisodeDecisions.append(((0, 0, 0, 0, 0, 2), "", 0))
 
         # Update Qtable and policy for both Q-Learning after success
         self.isObstacleDecisionMade = False
@@ -197,7 +310,7 @@ class QLearning(Controller):
         self.sumOfRewards.append(sumOfReward)
         self.averageReward.append(sumOfReward / (len(self.episodeDecisions) + len(self.obstacleEpisodeDecisions) + 1e-6))
 
-    # Out put policy to json file
+    # Output policy to json file
     def outputPolicy(self, scenario, current_map, run_index) -> None:
         with open(f"policy/{scenario}/{current_map}/DualQL/{run_index}/policy.json", "w") as outfile:
             json.dump(remap_keys(self.policy), outfile, indent=2)
@@ -228,18 +341,14 @@ class QLearning(Controller):
 
     def updateObstacleQtable(self, state, decision, reward, next_state) -> None:
         # Optimal value of next state
-        optimalQnext = max([self.obstacleQtable[(next_state[0], next_state[1], next_state[2], next_state[3],
-                                                 action)] for action in action_space])
+        optimalQnext = max([self.obstacleQtable[(next_state[0], next_state[1], next_state[2], next_state[3], next_state[4], next_state[5], action)] for action in action_space])
 
         # Update Qtable
-        self.obstacleQtable[(state[0], state[1], state[2], next_state[3], decision)] = (1 - ALPHA) * self.obstacleQtable[
-            (state[0], state[1], state[2], next_state[3], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
+        self.obstacleQtable[(state[0], state[1], state[2], state[3], state[4], state[5], decision)] = (1 - ALPHA) * self.obstacleQtable[(state[0], state[1], state[2], state[3], state[4], state[5], decision)] + ALPHA * (reward + GAMMA * optimalQnext)
 
     def updateObstaclePolicy(self, state) -> None:
-        # Update policy
-        bestAction = max(action_space,
-                         key=lambda action: self.obstacleQtable[(state[0], state[1], state[2], state[3], action)])
-
+        # state là 6-tuple: (c_phi, c_deltaphi, c_deltad, goal_direction, nearest_obs_octant, nearest_obs_dist_bin)
+        bestAction = max(action_space,key=lambda action: self.obstacleQtable[(state[0], state[1], state[2], state[3], state[4], state[5], action)])
         self.obstaclePolicy[state] = bestAction
 
     def updateAll(self) -> None:
@@ -302,73 +411,90 @@ class QLearning(Controller):
             weight = 1 / np.sqrt(2)
 
         # Reward is the change in distance to the goal (negative reward if the robot is moving away from the goal)
-        reward = ((distance - next_distance) / np.abs(distance - next_distance + 1e-6)) * weight
+        if not np.isfinite(distance) or not np.isfinite(next_distance):
+            reward = -100 
+        else:
+            reward = ((distance - next_distance) / np.abs(distance - next_distance + 1e-6)) * weight
 
         # Add to episode decisions
         self.episodeDecisions.append((state, decision, reward))
 
         return decision_movement[decision]
 
+    
     def makeObstacleDecision(self, rb, obstacle_position) -> tuple:
-        # Update Qtable and policy for the last decision
         self.updateAll()
-
-        # Set the obstacle decision flag
         self.isObstacleDecisionMade = True
 
-        # Get the position of the obstacle before and after moving
-        # Then calculate the relative position of the obstacle to the robot
         obstacle_before = obstacle_position[0]
-        obstacle_after = obstacle_position[1]
-
-        distance_to_obstacle = np.sqrt((rb.pos[0] - obstacle_before[0]) ** 2 + (rb.pos[1] - obstacle_before[1]) ** 2)
-        distance_to_obstacle_next = np.sqrt((rb.pos[0] - obstacle_after[0]) ** 2 + (rb.pos[1] - obstacle_after[1]) ** 2)
+        obstacle_after  = obstacle_position[1]
 
         rb_direction = rb.nextPosition(self.goal)
         phi = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_before[0] - rb.pos[0],
-                    obstacle_before[1] - rb.pos[1])
+                        obstacle_before[1] - rb.pos[1])
         phi_next = angle(rb_direction[0] - rb.pos[0], rb_direction[1] - rb.pos[1], obstacle_after[0] - rb.pos[0],
-                         obstacle_after[1] - rb.pos[1])
-
+                        obstacle_after[1] - rb.pos[1])
+        
         # Convert to state
-        c_phi = convertphi(phi / np.pi * 180)
+        c_phi      = convertphi(phi / np.pi * 180)
         c_deltaphi = convertdeltaphi((phi_next - phi) / np.pi * 180)
-        c_deltad = convertdeltad((distance_to_obstacle_next - distance_to_obstacle))
-
-        # Find the octant of the goal
+        distance_to_obstacle = np.sqrt((rb.pos[0] - obstacle_before[0]) ** 2 + (rb.pos[1] - obstacle_before[1]) ** 2)
+        distance_to_obstacle_next = np.sqrt((rb.pos[0] - obstacle_after[0]) ** 2 + (rb.pos[1] - obstacle_after[1]) ** 2)
+        c_deltad = convertdeltad(distance_to_obstacle_next - distance_to_obstacle)
         goal_direction = find_octant(rb.pos[0], rb.pos[1], self.goal)
 
-        state = (c_phi, c_deltaphi, c_deltad, goal_direction)
+        # Find nearest static wall point
+        min_dist_static = float('inf')
+        nearest_obs_octant = 0
+        nearest_obs_dist_bin = 2
 
-        # Epsilon greedy
-        # Randomly choose an action
-        if random.random() < EPSILON:
+        for obs in self.static_obstacles:
+            x1, x2, y1, y2 = obs.return_coordinate()
+            closest_x = min(max(rb.pos[0], x1), x2)
+            closest_y = min(max(rb.pos[1], y1), y2)
+            d = math.hypot(rb.pos[0] - closest_x, rb.pos[1] - closest_y)
+            if d < min_dist_static:
+                min_dist_static = d
+                nearest_point = (closest_x, closest_y)
+
+        # Angle to wall
+        nearest_obs_octant = find_octant(rb.pos[0], rb.pos[1], nearest_point)
+
+        # Distance to goal
+        r = self.safe_radius_cells * self.cell_size
+        if min_dist_static <= r:
+            nearest_obs_dist_bin = 0
+        elif min_dist_static <= 2 * r:
+            nearest_obs_dist_bin = 1
+        else:
+            nearest_obs_dist_bin = 2
+
+        state = (c_phi, c_deltaphi, c_deltad, goal_direction, nearest_obs_octant, nearest_obs_dist_bin)
+
+        # Epsilon‐greedy 
+        if random.random() < EPSILON_OBS:
             decision = random.choice(action_space)
-        # Choose the best action
         else:
             decision = self.obstaclePolicy[state]
 
-        # Calculate reward
-        distance = self.calculateDistanceToGoal(state)
-
+        # Distance to goal
         movement = decision_movement[decision]
-        next_state = (state[0] + movement[0], state[1] + movement[1])
+        curr_pos = self.convertState(rb)
+        distance = self.calculateDistanceToGoal(curr_pos)
+        next_state = (curr_pos[0] + movement[0], curr_pos[1] + movement[1])   
         next_distance = self.calculateDistanceToGoal(next_state)
 
-        distance_to_obstacle_after_movement = np.sqrt((rb.pos[0] + movement[0] * self.cell_size - obstacle_after[0]) ** 2
-                                                      + (rb.pos[1] + movement[1] * self.cell_size - obstacle_after[1]) ** 2)
-
         if decision in ["up_1", "down_1", "left_1", "right_1"]:
-            weight = 1
+            weight = 1.0
         else:
-            weight = 1 / np.sqrt(2)
+            weight = 1.0 / math.sqrt(2)
 
-        # Reward is the change in distance to the goal (negative reward if the robot is moving away from the goal)
-        # plus the change in distance to the obstacle (negative reward if the robot is moving closer to the obstacle)
-        reward = ((distance - next_distance) / np.abs(distance - next_distance + 1e-6)) * weight
-        + OBSTACLE_REWARD_FACTOR * (distance_to_obstacle_after_movement - distance_to_obstacle) / np.abs(distance_to_obstacle_after_movement - distance_to_obstacle + 1e-6) * weight
+        # Reward shaping
+        if not np.isfinite(distance) or not np.isfinite(next_distance):
+            reward = -100  
+        else:
+            reward = ((distance - next_distance) / np.abs(distance - next_distance + 1e-6)) * weight
 
-        # Add to episode decisions
         self.obstacleEpisodeDecisions.append((state, decision, reward))
 
         return decision_movement[decision]
